@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Obsidian Retreat | LUXESTAY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed": "#313951",
+              "secondary-dim": "#9f9da1",
+              "on-tertiary-fixed-variant": "#4d556f",
+              "error-dim": "#b95463",
+              "on-background": "#e7e5e4",
+              "primary-dim": "#b2b1ff",
+              "on-primary-fixed-variant": "#4a47d2",
+              "on-secondary-fixed": "#403f43",
+              "on-tertiary": "#4c546e",
+              "secondary-container": "#3c3b3f",
+              "tertiary-container": "#d1d9f8",
+              "tertiary-fixed": "#d1d9f8",
+              "surface-tint": "#c2c1ff",
+              "secondary-fixed": "#e5e1e6",
+              "primary": "#c2c1ff",
+              "on-secondary": "#202023",
+              "secondary": "#9f9da1",
+              "on-primary-fixed": "#2b22b5",
+              "surface-container": "#191a1a",
+              "primary-fixed-dim": "#d2d0ff",
+              "inverse-primary": "#4e4bd5",
+              "surface-container-low": "#131313",
+              "on-secondary-container": "#c1bec3",
+              "surface-container-high": "#1f2020",
+              "on-secondary-fixed-variant": "#5c5b5f",
+              "surface-variant": "#252626",
+              "on-error-container": "#ff97a3",
+              "surface": "#0e0e0e",
+              "primary-fixed": "#e2dfff",
+              "outline-variant": "#484848",
+              "outline": "#767575",
+              "surface-container-highest": "#252626",
+              "on-surface": "#e7e5e4",
+              "error-container": "#7f2737",
+              "error": "#ec7c8a",
+              "tertiary-fixed-dim": "#c3cbe9",
+              "inverse-on-surface": "#565554",
+              "on-primary-container": "#cdccff",
+              "inverse-surface": "#fcf8f8",
+              "tertiary-dim": "#c3cbe9",
+              "on-primary": "#2c23b6",
+              "background": "#0e0e0e",
+              "primary-container": "#332dbc",
+              "on-surface-variant": "#acabaa",
+              "on-error": "#490013",
+              "surface-dim": "#0e0e0e",
+              "tertiary": "#e2e7ff",
+              "on-tertiary-container": "#444c65",
+              "surface-bright": "#2c2c2c",
+              "secondary-fixed-dim": "#d7d3d8",
+              "surface-container-lowest": "#000000"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0e0e0e; color: #e7e5e4; scroll-behavior: smooth; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { background: rgba(14, 14, 14, 0.8); backdrop-filter: blur(12px); }
+        .hero-gradient { background: linear-gradient(to bottom, rgba(14,14,14,0) 0%, rgba(14,14,14,1) 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #c2c1ff 0%, #332dbc 100%); }
+    </style>
+</head>
+<body class="selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#0e0e0e]/80 backdrop-blur-md shadow-[0_20px_50px_rgba(194,193,255,0.06)]">
+<div class="flex justify-between items-center px-8 h-16 w-full max-w-screen-2xl mx-auto">
+<div class="text-lg font-bold tracking-tighter text-[#e7e5e4]">LUXESTAY</div>
+<div class="hidden md:flex gap-8 font-['Inter'] text-sm font-medium tracking-tight">
+<a class="text-[#acabaa] hover:text-[#e7e5e4] transition-all duration-300" href="#gallery">Gallery</a>
+<a class="text-[#acabaa] hover:text-[#e7e5e4] transition-all duration-300" href="#amenities">Amenities</a>
+<a class="text-[#acabaa] hover:text-[#e7e5e4] transition-all duration-300" href="#booking">Booking</a>
+<a class="text-[#acabaa] hover:text-[#e7e5e4] transition-all duration-300" href="#contact">Contact</a>
+</div>
+<button class="bg-[#c2c1ff] text-[#2c23b6] px-5 py-2 text-sm font-bold tracking-tight rounded-DEFAULT active:scale-[0.98] transition-transform">
+                Book Now
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen flex flex-col justify-end overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="" class="w-full h-full object-cover grayscale-[0.2]" data-alt="Modern minimalist obsidian themed luxury living space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-NHWdkriW3iEZFMVA-sb4C6xZKkQHLauyy3Le_inJFfMc8dZ3_s4EyPlgJ7SjdEU0p3lUhJg9zVCz02cf42-qKF0GHVSfLk_XEcM3OJr2jjOj2PJTDD5ZFWMzwvAkMdY6nKNDJtc3l-85bYong1vL62cQZJTNUJPljJ4XmFmYpbuYGWKVCj5JP1C1UEGhctoNi-WZUZQVDRqZ2AytHGUuqnfFqIPTOj3L35YOaxXNKmQtuB_RLmOcBy8rwhvZ0kc4RQI2gXSlsSA"/>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 px-8 pb-24 max-w-screen-2xl mx-auto w-full">
+<h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter text-on-surface mb-6 leading-tight max-w-4xl">
+                The Obsidian <span class="text-primary-dim">Retreat</span>.
+            </h1>
+<p class="text-on-surface-variant text-xl max-w-2xl mb-10 leading-relaxed">
+                A sanctuary of technical precision and architectural warmth. Experience the pinnacle of curated living in the heart of the city.
+            </p>
+<div class="flex gap-4">
+<a class="primary-gradient text-on-primary px-8 py-4 text-sm font-bold uppercase tracking-widest rounded-DEFAULT hover:opacity-90 transition-opacity" href="#booking">
+                    Check Availability
+                </a>
+<a class="bg-surface-container-high text-on-surface px-8 py-4 text-sm font-bold uppercase tracking-widest rounded-DEFAULT border border-outline-variant/20 hover:bg-surface-bright transition-colors" href="#gallery">
+                    Explore Space
+                </a>
+</div>
+</div>
+</section>
+<!-- Gallery (Bento Style) -->
+<section class="bg-surface py-32 px-8" id="gallery">
+<div class="max-w-screen-2xl mx-auto">
+<div class="mb-16">
+<span class="text-primary text-xs font-bold uppercase tracking-[0.2em] block mb-4">Architecture</span>
+<h2 class="text-4xl font-bold tracking-tight text-on-surface">Visual Narrative</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 h-[1200px] md:h-[800px]">
+<div class="md:col-span-8 overflow-hidden rounded-lg group">
+<img alt="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Spacious living room with high-end furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg4OQKZSfhfv0B5EePUqteeisY35zzgiq43qEtCuPhTInT7UVrdVTF1sOy84mqJ7fn0biSlCy5rfx5cb_dSTXS3W9ONNwHnOpCb8lFsvulANSKTqw00_pdKMRv-FP48JkCxH0xXFL8d7MrkNAmIMHipu9Shj1ibdp9ffKUe0deGWUOSD3KoIwy3rbj6jqZfogjBF0xBPFz7fwX9ko47w-AqR4KyFLLxku72MFtyZ39yQNd_9wNOGnDfeouH5mVAvD0UbBD6qEm1Z8"/>
+</div>
+<div class="md:col-span-4 overflow-hidden rounded-lg group">
+<img alt="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Minimalist bedroom with neutral tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOlB4_ex7VtRPqdk8dONp_BZwxOMYTjn4LLSrk5l-v29W6nYcUPSfcpfVHUmsW4kQ5oruHH5vogLooI9rr1HNxbjdXuRTjIiZ6U4SyRhH0Y5QH2hxrVPzrqlDJIXfqfFLNYsd3NwpQzwCroeUu5iaQ0Kt-NLkdXq6qO_CnBZnoi4UrqFHilpDNUIsLobmQpRPynJUXAkTnbB0Qr1CXQkH88jQgurMZ3tb6zv7cJxObuv0YQKbqyGOAaALa0455ekrWoNT77uYzO6U"/>
+</div>
+<div class="md:col-span-4 overflow-hidden rounded-lg group">
+<img alt="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Gourmet kitchen with marble accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRUo450oaEoiGlzZxH_NWxwOQiJ90bzSOBl6RJdZ-nYssRZMPBtswMQC2qb_fkrmwRuVj09Zroz_aSP4Q-ukziUekdzDSWdYKOAQmY4hnEYj3CT-9qC_c1UyZ--MGS3nPXIUW2K-TiJhGKNLTz4AdV9KQDF6vsuWSrU_H2Atb7qt8sLskHSH7UcWtWprdoUSmDAu6IzouXG2m_uj1EKDt2GyrrppCsvDBPfuvd9D8YCKDkEHeZ8BCcVr0auHVcRuqpyY3Mqm83nSw"/>
+</div>
+<div class="md:col-span-8 overflow-hidden rounded-lg group">
+<img alt="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stunning city view from a large balcony" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV_-eqXtse_H8vDvQ8AU8-7HnbSJt7tqkRyG1Ee95ocJvFC5W2KinmK6B42KJdWmKRvonABCLStY3NxGNbDkdgG08Ev4Xy19-f1FE_be0EoW1yb4v5Qh_7EaJ0_dEMBY4VebVv6YSWrGCEb51hcvuRYRIzyEN-d_JiY0TwB4Vih-vj-1v-aBfLVfGo-gfU44K-hteXo1MLJrOSU5u-esykEdvBgsUJoqfdqgNfkRb-ez7lqT-_g94uFZIshJpv9raKyU1b7bfNYTA"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Amenities -->
+<section class="bg-surface-container-low py-32 px-8" id="amenities">
+<div class="max-w-screen-2xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-24 items-start">
+<div>
+<span class="text-primary text-xs font-bold uppercase tracking-[0.2em] block mb-4">Specifications</span>
+<h2 class="text-4xl font-bold tracking-tight text-on-surface mb-8">Precision Engineered Comfort</h2>
+<p class="text-on-surface-variant leading-relaxed text-lg mb-12">
+                        Every detail of the Obsidian Retreat has been designed to meet the highest standards of technical excellence and ergonomic luxury.
+                    </p>
+<div class="grid grid-cols-2 gap-y-10 gap-x-8">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">bed</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm">2 Bedrooms</h4>
+<p class="text-on-surface-variant text-xs mt-1">Soundproofed</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">king_bed</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm">1 King Bed</h4>
+<p class="text-on-surface-variant text-xs mt-1">Tempur-Pedic</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">wifi</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm">Gigabit Wi-Fi</h4>
+<p class="text-on-surface-variant text-xs mt-1">Wi-Fi 6 Enabled</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">skillet</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm">Full Kitchen</h4>
+<p class="text-on-surface-variant text-xs mt-1">Sub-Zero Appliances</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">ac_unit</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm">Climate Control</h4>
+<p class="text-on-surface-variant text-xs mt-1">Multi-zone Smart System</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">smart_display</span>
+<div>
+<h4 class="text-on-surface font-bold text-sm">Home Cinema</h4>
+<p class="text-on-surface-variant text-xs mt-1">8K Laser Projector</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-1 border border-outline-variant/10 shadow-2xl">
+<img alt="" class="rounded-lg w-full h-auto grayscale-[0.3]" data-alt="Technical architectural detail of the interior design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeIF3Ck3oZYu81GgsG8MrkGFZ27EeRBwsbHcVfCGGmRi5B8Aj69So6lRJAC1UZUNvfFcR-LOGmyEOggHD-w5jzVDODuqMfUrE9u-Am8P-_7xC39kKsD0uKIBQWQPs-p99ZDqiL_E-yvmxxl79QCnvXsNE_-P1R4DIJvaRlwflTQg58PkGgCJ0Evk7xDQzSAnMEScfX9KNIxbyBW9Ll_OUtz9R6B2mZBmnPZJuXBkXZpqDqL3caDxbWC3l3KNJQgrNul9c1tCGFASA"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking Section -->
+<section class="bg-surface py-32 px-8" id="booking">
+<div class="max-w-screen-2xl mx-auto">
+<div class="bg-surface-container-low rounded-xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-outline-variant/10">
+<!-- Calendar (Visual Placeholder) -->
+<div class="md:w-1/2 p-12 bg-surface-container-lowest">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-xl font-bold tracking-tight">Select Dates</h3>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">chevron_left</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-on-surface-variant mb-4">
+<div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
+</div>
+<div class="grid grid-cols-7 gap-1 text-center">
+<!-- Simplified Calendar Grid -->
+<div class="py-3 text-on-surface-variant/30">29</div><div class="py-3 text-on-surface-variant/30">30</div>
+<div class="py-3">1</div><div class="py-3">2</div><div class="py-3">3</div><div class="py-3">4</div><div class="py-3">5</div>
+<div class="py-3">6</div><div class="py-3">7</div><div class="py-3">8</div><div class="py-3">9</div><div class="py-3">10</div><div class="py-3">11</div><div class="py-3">12</div>
+<div class="py-3 bg-primary text-on-primary rounded-sm">13</div><div class="py-3 bg-primary/40">14</div><div class="py-3 bg-primary/40">15</div><div class="py-3 bg-primary text-on-primary rounded-sm">16</div><div class="py-3">17</div><div class="py-3">18</div><div class="py-3">19</div>
+<div class="py-3">20</div><div class="py-3">21</div><div class="py-3">22</div><div class="py-3">23</div><div class="py-3">24</div><div class="py-3">25</div><div class="py-3">26</div>
+<div class="py-3">27</div><div class="py-3">28</div><div class="py-3">29</div><div class="py-3">30</div><div class="py-3">31</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/10 text-xs text-on-surface-variant uppercase tracking-widest flex justify-between">
+<span>Selected Range:</span>
+<span class="text-primary font-bold">Oct 13 - Oct 16 (3 Nights)</span>
+</div>
+</div>
+<!-- Booking Form -->
+<div class="md:w-1/2 p-12 flex flex-col">
+<h3 class="text-xl font-bold tracking-tight mb-8">Reservation Details</h3>
+<form class="space-y-6 flex-grow">
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Full Name</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-sm px-4 py-3 text-sm focus:ring-1 focus:ring-primary transition-all" placeholder="Enter your full name" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Email Address</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-sm px-4 py-3 text-sm focus:ring-1 focus:ring-primary transition-all" placeholder="name@domain.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Number of Guests</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-sm px-4 py-3 text-sm focus:ring-1 focus:ring-primary appearance-none">
+<option>1 Guest</option>
+<option selected="">2 Guests</option>
+<option>3 Guests</option>
+<option>4 Guests</option>
+</select>
+</div>
+<div class="mt-12 space-y-4">
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">$450.00 x 3 nights</span>
+<span class="font-bold">$1,350.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">Cleaning Fee</span>
+<span class="font-bold">$120.00</span>
+</div>
+<div class="flex justify-between text-lg font-bold border-t border-outline-variant/10 pt-4">
+<span>Sub-total</span>
+<span class="text-primary">$1,470.00</span>
+</div>
+</div>
+<button class="w-full primary-gradient text-on-primary py-4 rounded-sm font-bold uppercase tracking-[0.2em] text-xs hover:opacity-95 transition-opacity mt-8" type="submit">
+                            Confirm Booking
+                        </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- House Rules & Location -->
+<section class="bg-surface-container-low py-32 px-8">
+<div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24">
+<div>
+<span class="text-primary text-xs font-bold uppercase tracking-[0.2em] block mb-4">Protocol</span>
+<h2 class="text-4xl font-bold tracking-tight text-on-surface mb-8">House Rules</h2>
+<ul class="space-y-6 text-on-surface-variant">
+<li class="flex items-center gap-4">
+<span class="w-2 h-2 rounded-full bg-primary-dim"></span>
+                        Check-in: 3:00 PM — 10:00 PM
+                    </li>
+<li class="flex items-center gap-4">
+<span class="w-2 h-2 rounded-full bg-primary-dim"></span>
+                        No smoking or electronic cigarettes within the premises.
+                    </li>
+<li class="flex items-center gap-4">
+<span class="w-2 h-2 rounded-full bg-primary-dim"></span>
+                        Quiet hours are strictly observed between 10:00 PM and 7:00 AM.
+                    </li>
+<li class="flex items-center gap-4">
+<span class="w-2 h-2 rounded-full bg-primary-dim"></span>
+                        Commercial photography or filming requires prior authorization.
+                    </li>
+<li class="flex items-center gap-4">
+<span class="w-2 h-2 rounded-full bg-primary-dim"></span>
+                        Maximum occupancy: 4 Guests.
+                    </li>
+</ul>
+</div>
+<div>
+<span class="text-primary text-xs font-bold uppercase tracking-[0.2em] block mb-4">Geography</span>
+<h2 class="text-4xl font-bold tracking-tight text-on-surface mb-8">Location Details</h2>
+<div class="aspect-video bg-surface-container-high rounded-lg overflow-hidden border border-outline-variant/10 relative group">
+<img alt="" class="w-full h-full object-cover opacity-60 grayscale group-hover:opacity-80 transition-opacity" data-alt="Modern dark-themed map visualization of the city center" data-location="New York" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTO6VtdFr3UR88dW7jJfh0lwWlzHgXOI9cVUYhTQyhIiDWslCpr26EhFNnyA9S0AAgsl7jFcFk8jsHOz_dy96Gfrmv9eldt8S8H0e2R3bsIn7ArUslAPmC9DiYMy4lP0jfLSrZTOiFmAAv0ejZVbhLRqVcXW-eA8sj5AMYQ3wZ0bfrMAlgiYrThbLchGMn392pCmfBqHqq_lyYYgutYUpAhT03DYD9Hdlm_MvXieYh8oc9z-baU3xrs8XBKNNbLkyk_hATy4qrChM"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-[0_0_30px_rgba(194,193,255,0.4)]">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<h4 class="font-bold text-on-surface">The High Line District</h4>
+<p class="text-on-surface-variant text-sm mt-1">Exact coordinates provided upon confirmed reservation.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="bg-surface py-32 px-8" id="contact">
+<div class="max-w-4xl mx-auto text-center">
+<span class="text-primary text-xs font-bold uppercase tracking-[0.2em] block mb-4">Inquiries</span>
+<h2 class="text-5xl font-extrabold tracking-tighter text-on-surface mb-8">Let’s connect.</h2>
+<p class="text-on-surface-variant mb-12 text-lg">Our digital concierge is available 24/7 for any questions regarding your stay.</p>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+<input class="bg-surface-container-low border-none rounded-sm px-6 py-4 text-sm focus:ring-1 focus:ring-primary" placeholder="First Name" type="text"/>
+<input class="bg-surface-container-low border-none rounded-sm px-6 py-4 text-sm focus:ring-1 focus:ring-primary" placeholder="Email Address" type="email"/>
+<textarea class="md:col-span-2 bg-surface-container-low border-none rounded-sm px-6 py-4 text-sm focus:ring-1 focus:ring-primary h-32" placeholder="How can we assist you?"></textarea>
+<button class="md:col-span-2 bg-surface-bright text-on-surface py-4 font-bold uppercase tracking-widest text-xs border border-outline-variant/20 hover:bg-surface-container-highest transition-colors">
+                    Send Inquiry
+                </button>
+</form>
+<div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2">Direct</span>
+<p class="font-medium">+1 (212) 555-0198</p>
+</div>
+<div>
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2">Digital</span>
+<p class="font-medium">stay@obsidian.com</p>
+</div>
+<div>
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest block mb-2">Social</span>
+<p class="font-medium">@obsidianretreat</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#0e0e0e] w-full py-12 px-8 border-t border-[#484848]/15">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6 max-w-screen-2xl mx-auto">
+<div class="text-sm font-bold text-[#e7e5e4]">LUXESTAY</div>
+<div class="flex gap-8 font-['Inter'] text-[10px] uppercase tracking-[0.05em]">
+<a class="text-[#acabaa] hover:text-[#c2c1ff] transition-colors" href="#">Privacy Policy</a>
+<a class="text-[#acabaa] hover:text-[#c2c1ff] transition-colors" href="#">Terms of Service</a>
+<a class="text-[#acabaa] hover:text-[#c2c1ff] transition-colors" href="#">Sustainability</a>
+<a class="text-[#acabaa] hover:text-[#c2c1ff] transition-colors" href="#">Contact</a>
+</div>
+<div class="font-['Inter'] text-[10px] uppercase tracking-[0.05em] text-[#acabaa]">
+                © 2024 LUXESTAY PRECISION RENTALS
+            </div>
+</div>
+</footer>
+</body></html>

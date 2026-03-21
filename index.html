@@ -61,11 +61,11 @@
     </div>
 </nav>
 
-<header id="appartement" class="relative min-h-screen w-full flex flex-col items-center pt-32 overflow-hidden">
+<header id="appartement" class="relative min-h-screen w-full flex flex-col items-center pt-32 overflow-hidden text-center">
     <div class="absolute inset-0 bg-black/60 z-0"></div>
     <img alt="Salon" class="absolute inset-0 w-full h-full object-cover -z-10" src="assets/Images/Salon.jpg"/>
     
-    <div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
+    <div class="relative z-20 px-6 max-w-4xl mx-auto">
         <h1 class="font-headline text-4xl md:text-7xl font-light mb-8 tracking-tight text-white italic">
             Escale Paisible
         </h1>
@@ -105,7 +105,6 @@
 
 <section id="equipements" class="py-32 px-8 max-w-7xl mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[280px]">
-        
         <div class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-xl border border-white/5 relative overflow-hidden group">
             <img src="assets/Images/Ordi.jpg" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-25 transition-opacity duration-500"/>
             <div class="relative z-10">
@@ -153,20 +152,62 @@
     </div>
 </section>
 
-<section id="avis" class="py-24 bg-[#0e0e0e] overflow-hidden border-y border-white/5">
-    <div class="text-center mb-16"><h2 class="font-headline text-3xl italic text-primary">Excellent 8.9/10</h2></div>
-    <div class="flex mb-4">
+<section id="avis" class="py-32 bg-surface-container-lowest border-y border-white/5 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-8 mb-16">
+        <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+            <div class="max-w-xl">
+                <h2 class="font-headline text-4xl mb-4 italic text-white">L'avis de nos hôtes</h2>
+                <p class="text-on-surface/60 font-light">Des expériences authentiques partagées par ceux qui ont fait de l'Escale Paisible leur demeure temporaire.</p>
+            </div>
+            <div class="text-right">
+                <div class="text-primary font-headline text-2xl mb-1">Excellent 8.9/10</div>
+                <div class="text-xs uppercase tracking-widest text-zinc-500">72 expériences certifiées</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex overflow-hidden">
         <div class="animate-marquee flex">
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Logement très fonctionnel, quartier calme . On s’y sent comme chez soi."</p><p class="text-xs text-primary">— Ines</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Great location, superb facilities, safe and secure. Exceptional value."</p><p class="text-xs text-primary">— Joanne</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Bel appartement très soigné bien équipé, propre et meublé avec goût."</p><p class="text-xs text-primary">— Rousso</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Nous avons passé un agréable séjour dans cet appartement cozy et convivial."</p><p class="text-xs text-primary">— Edwige</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Die Unterkunft war super, Ich habe mich wie zuhause gefühlt."</p><p class="text-xs text-primary">— Kali</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Logement très fonctionnel, quartier calme . On s’y sent comme chez soi."</p><p class="text-xs text-primary">— Ines</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Great location, superb facilities, safe and secure. Exceptional value."</p><p class="text-xs text-primary">— Joanne</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Bel appartement très soigné bien équipé, propre et meublé avec goût."</p><p class="text-xs text-primary">— Rousso</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Nous avons passé un agréable séjour dans cet appartement cozy et convivial."</p><p class="text-xs text-primary">— Edwige</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Die Unterkunft war super, Ich habe mich wie zuhause gefühlt."</p><p class="text-xs text-primary">— Kali</p></div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Logement très fonctionnel, quartier calme . On s’y sent comme chez soi."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Ines</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Great location, superb facilities, safe and secure. Exceptional value."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Joanne</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Bel appartement très soigné bien équipé, propre et meublé avec goût."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Rousso</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Nous avons passé un agréable séjour dans cet appartement cozy et convivial."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Edwige</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Die Unterkunft war super, Ich habe mich wie zuhause gefühlt."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Kali</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Logement très fonctionnel, quartier calme . On s’y sent comme chez soi."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Ines</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Great location, superb facilities, safe and secure. Exceptional value."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Joanne</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Bel appartement très soigné bien équipé, propre et meublé avec goût."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Rousso</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Nous avons passé un agréable séjour dans cet appartement cozy et convivial."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Edwige</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5">
+                <p class="italic mb-6 text-on-surface/90 italic">"Die Unterkunft war super, Ich habe mich wie zuhause gefühlt."</p>
+                <p class="text-xs uppercase tracking-widest text-primary">— Kali</p>
+            </div>
         </div>
     </div>
 </section>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Escale Paisible | Private Garden Sanctuary / Giverny / Paris</title>
+    <title>Escale Paisible | Private Garden / Giverny / Paris</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;700&family=Inter:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
@@ -38,24 +38,25 @@
         <div class="text-xl font-light tracking-[0.1em] uppercase font-headline">Escale Paisible</div>
         <div class="hidden md:flex items-center gap-10">
             <div class="flex items-center gap-8 text-xs uppercase tracking-widest border-r border-white/10 pr-10">
-                <a href="#apartment" class="hover:text-primary transition-colors">The Apartment</a>
-                <a href="#amenities" class="hover:text-primary transition-colors">Amenities</a>
+                <a href="#appartement" class="hover:text-primary transition-colors">The Apartment</a>
+                <a href="#equipements" class="hover:text-primary transition-colors">Amenities</a>
+                <a href="local.html" class="hover:text-primary transition-colors">Local Guide</a>
                 <a href="gallerie.html" class="hover:text-primary transition-colors flex items-center gap-1 text-primary">Gallery <span class="material-symbols-outlined text-[14px]">photo_library</span></a>
-                <a href="#reviews" class="hover:text-primary transition-colors">Reviews</a>
+                <a href="#avis" class="hover:text-primary transition-colors">Reviews</a>
             </div>
             <div class="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase">
                 <a href="index.html" onclick="localStorage.setItem('language_preference','fr');" class="opacity-40 hover:opacity-100">FR</a>
                 <span class="opacity-20">|</span>
                 <button onclick="localStorage.setItem('language_preference','en'); location.reload();" class="text-primary border-b border-primary/40">EN</button>
             </div>
-            <a href="#book" class="bg-primary text-[#131e8c] px-6 py-2 font-medium text-xs uppercase tracking-wider rounded-sm hover:scale-95 transition-transform">Book Now</a>
+            <a href="#reserver" class="bg-primary text-[#131e8c] px-6 py-2 font-medium text-xs uppercase tracking-wider rounded-sm hover:scale-95 transition-transform">Book Now</a>
         </div>
     </div>
 </nav>
 
-<header id="apartment" class="relative min-h-screen md:min-h-[110vh] w-full flex items-center overflow-hidden">
+<header id="appartement" class="relative min-h-screen md:min-h-[110vh] w-full flex items-center overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/20 to-black/80 z-10"></div>
-    <img alt="Lounge" class="absolute inset-0 w-full h-full object-cover -z-10" src="assets/Images/Salon.jpg"/>
+    <img alt="Living Room" class="absolute inset-0 w-full h-full object-cover -z-10" src="assets/Images/Salon.jpg"/>
     <div class="relative z-20 px-8 md:px-16 w-full max-w-[1600px] mx-auto pt-24">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             <div class="md:col-span-6 space-y-8">
@@ -63,14 +64,14 @@
                     <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                     <span class="text-[10px] uppercase tracking-[0.4em] text-primary font-bold text-white">The Apartment</span>
                 </div>
-                <h1 class="font-headline text-7xl md:text-9xl font-light text-white leading-[0.8] tracking-tighter italic">Serene <br> <span class="text-primary/90 ml-12 md:ml-24">Sanctuary</span></h1>
+                <h1 class="font-headline text-7xl md:text-9xl font-light text-white leading-[0.8] tracking-tighter italic">Peaceful <br> <span class="text-primary/90 ml-12 md:ml-24">Escape</span></h1>
                 <p class="font-headline text-2xl md:text-4xl text-white/90 italic leading-tight max-w-md pt-8">"Forget the stress <br> & the noise."</p>
             </div>
             <div class="hidden md:block md:col-span-2"></div>
             <div class="md:col-span-4 relative mt-12 md:mt-0">
-                <div class="bg-black/20 backdrop-blur-sm p-8 border-l border-primary/30 space-y-8 text-white text-left">
-                    <p class="text-lg md:text-xl font-light leading-relaxed text-left">Here, you aren't just booking <span class="text-white font-medium border-b border-primary/20">45 sqm</span>, you are reserving a true haven of tranquility with a <span class="italic text-primary">private garden</span>. 🌿</p>
-                    <p class="text-sm text-on-surface/60 font-light leading-relaxed text-left">Whether you're returning from a day admiring Monet's lilies in <strong class="text-white">Giverny (25 min)</strong> or a historic visit to the Palace of Versailles, this cocoon is your protective retreat.</p>
+                <div class="bg-black/20 backdrop-blur-sm p-8 border-l border-primary/30 space-y-8 text-white">
+                    <p class="text-lg md:text-xl font-light leading-relaxed">Here, you don't just book <span class="text-white font-medium border-b border-primary/20">45 m²</span>, you book a true sanctuary of serenity with a <span class="italic text-primary">private garden</span>. 🌿</p>
+                    <p class="text-sm text-on-surface/60 font-light leading-relaxed">Whether you're returning from a day admiring Monet's water lilies in <strong class="text-white">Giverny (25 min)</strong> or a historical visit to the Palace of Versailles, this cocoon is your protective refuge.</p>
                 </div>
                 <div class="flex flex-col gap-3 mt-8">
                     <div class="flex items-center gap-4 bg-white/5 backdrop-blur-xl p-3 rounded-xl border border-white/10 w-fit hover:bg-white/10 transition-colors text-white">
@@ -79,11 +80,11 @@
                     </div>
                     <div class="flex items-center gap-4 bg-white/5 backdrop-blur-xl p-3 rounded-xl border border-white/10 w-fit ml-6 hover:bg-white/10 transition-colors text-white">
                         <span class="material-symbols-outlined text-primary text-sm">verified_user</span>
-                        <span class="text-[9px] uppercase tracking-widest font-bold">Secured Residence</span>
+                        <span class="text-[9px] uppercase tracking-widest font-bold">Secured residence</span>
                     </div>
                     <div class="flex items-center gap-4 bg-white/5 backdrop-blur-xl p-3 rounded-xl border border-white/10 w-fit ml-2 hover:bg-white/10 transition-colors text-white">
                         <span class="material-symbols-outlined text-primary text-sm">power_off</span>
-                        <span class="text-[9px] uppercase tracking-widest font-bold">Total Disconnection</span>
+                        <span class="text-[9px] uppercase tracking-widest font-bold">Total disconnect</span>
                     </div>
                 </div>
             </div>
@@ -91,74 +92,107 @@
     </div>
 </header>
 
-<section id="amenities" class="py-32 px-8 max-w-7xl mx-auto">
+<section id="equipements" class="py-32 px-8 max-w-7xl mx-auto">
     <div class="mb-16">
         <h2 class="font-headline text-3xl md:text-4xl italic text-primary mb-4">Amenities & Comfort</h2>
-        <p class="text-on-surface/60 font-light max-w-xl text-left">Every detail has been designed for your comfort and peace of mind.</p>
+        <p class="text-on-surface/60 font-light max-w-xl">Everything has been designed for your comfort and peace of mind.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[280px]">
-        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-xl border border-white/5 relative overflow-hidden group bento-link text-left">
+        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-xl border border-white/5 relative overflow-hidden group bento-link">
             <img src="assets/Images/Ordi.jpg" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-25 transition-all duration-500 group-hover:scale-105"/>
             <div class="relative z-10 text-left">
                 <span class="material-symbols-outlined text-primary text-3xl mb-4 block">wifi</span>
-                <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-2 italic text-white">510 Mb/s Fiber</h3>
+                <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-2 italic text-white">Fiber 510 Mb/s</h3>
                 <p class="text-on-surface/70 font-light text-sm text-white">Perfect for remote work or 4K streaming.</p>
             </div>
         </a>
-        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-xl border border-white/5 relative overflow-hidden group bento-link text-left">
+        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-xl border border-white/5 relative overflow-hidden group bento-link">
             <img src="assets/Images/Place21.jpg" class="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-30 transition-all duration-500 group-hover:scale-105"/>
             <div class="relative z-10 text-left">
                 <span class="material-symbols-outlined text-primary text-3xl mb-4 block text-white">directions_car</span>
                 <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-2 italic text-white">Private Parking</h3>
-                <p class="text-on-surface/70 font-light text-sm text-white text-left">Secured underground parking space included.</p>
+                <p class="text-on-surface/70 font-light text-sm text-white">Secured underground parking space included.</p>
             </div>
         </a>
-        <a href="gallerie.html" class="md:col-span-4 md:row-span-2 bg-surface-container-low p-0 rounded-xl relative overflow-hidden group border border-white/5 bento-link text-left">
+        <a href="gallerie.html" class="md:col-span-4 md:row-span-2 bg-surface-container-low p-0 rounded-xl relative overflow-hidden group border border-white/5 bento-link">
             <img src="assets/Images/Jardin.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-1000"/>
             <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent p-10 flex flex-col justify-end text-left">
                 <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-3 italic text-white">Outdoor</h3>
                 <p class="text-3xl font-headline mb-4 text-white">Garden & Terrace</p>
-                <p class="text-on-surface/70 font-light text-sm text-white text-left">A private balcony and terrace for your quiet mornings.</p>
+                <p class="text-on-surface/70 font-light text-sm text-white">A balcony and a private terrace for your quiet mornings.</p>
             </div>
         </a>
-        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-0 rounded-xl relative overflow-hidden group border border-white/5 bento-link text-left">
+        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-0 rounded-xl relative overflow-hidden group border border-white/5 bento-link">
             <img src="assets/Images/velos.jpg" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-1000"/>
             <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent text-left">
                 <span class="material-symbols-outlined text-primary text-3xl mb-2">pedal_bike</span>
                 <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-1 italic text-white">Mobility</h3>
-                <p class="text-lg font-headline text-white">Cyclist Friendly</p>
+                <p class="text-lg font-headline text-white">Bike Friendly</p>
                 <p class="text-xs text-on-surface/70 font-light text-white">Secured storage for your bicycles.</p>
             </div>
         </a>
-        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-center rounded-xl border border-white/5 relative overflow-hidden group bento-link text-left">
+        <a href="gallerie.html" class="md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-center rounded-xl border border-white/5 relative overflow-hidden group bento-link">
              <img src="assets/Images/Cuisine.jpg" class="absolute inset-0 w-full h-full object-cover opacity-20 transition-all duration-500 group-hover:opacity-30 group-hover:scale-105"/>
              <div class="relative z-10 text-left">
-                <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-2 italic text-white text-left">The Space</h3>
-                <p class="text-on-surface/70 font-light text-sm leading-relaxed text-white text-zinc-300">Independent ground-floor apartment, fully accessible.</p>
+                <h3 class="text-xs uppercase tracking-[0.2em] text-primary mb-2 italic text-white">The Space</h3>
+                <p class="text-on-surface/70 font-light text-sm leading-relaxed text-white text-zinc-300">Independent ground floor apartment, PMR accessible.</p>
             </div>
         </a>
     </div>
 </section>
 
-<section id="reviews" class="py-24 bg-surface-container-lowest overflow-hidden border-y border-white/5">
-    <div class="text-center mb-16"><h2 class="font-headline text-3xl italic text-primary">Guest Reviews • 8.9/10 Excellent</h2></div>
-    <div class="flex">
-        <div class="animate-marquee flex text-white text-zinc-300">
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5 text-left"><p class="italic mb-4 text-left">"Very functional accommodation, quiet neighborhood. You feel right at home."</p><p class="text-xs text-primary text-left">— Ines</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5 text-left"><p class="italic mb-4 text-left">"Great location, superb facilities, safe and secure. Exceptional value."</p><p class="text-xs text-primary text-left">— Joanne</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5 text-left"><p class="italic mb-4 text-left">"Beautiful apartment, very well-kept and equipped, clean and tastefully furnished."</p><p class="text-xs text-primary text-left">— Rousso</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5 text-left"><p class="italic mb-4 text-left">"We had a pleasant stay in this cozy and convivial apartment."</p><p class="text-xs text-primary text-left">— Edwige</p></div>
-            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5 text-left"><p class="italic mb-4 text-left">"The accommodation was superb, I felt at home."</p><p class="text-xs text-primary text-left">— Kali</p></div>
+<section id="guide-link" class="py-24 px-8 max-w-7xl mx-auto border-t border-white/5">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+            <h2 class="font-headline text-3xl md:text-5xl italic text-primary mb-6">Explore the surroundings</h2>
+            <p class="text-lg font-light text-white/60 leading-relaxed mb-8">
+                From Monet’s water lilies in Giverny to the hidden tables of the Vexin, we have selected the best local addresses for you.
+            </p>
+            <a href="local.html" class="inline-flex items-center gap-4 text-primary group font-medium uppercase tracking-widest text-sm">
+                Discover the Local Guide
+                <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+            </a>
+        </div>
+        <div class="relative group cursor-pointer" onclick="window.location.href='local.html'">
+            <div class="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <img src="assets/Images/thoiry.jpg" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" alt="Local Guide preview">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-8">
+                    <p class="font-headline text-xl italic text-white">The Curator's Guide</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<section id="book" class="py-24 px-4 md:px-8 max-w-7xl mx-auto text-center text-left">
-    <h2 class="font-headline text-3xl md:text-4xl mb-12 italic text-primary uppercase tracking-tighter text-white">Book Your Escape</h2>
-    <div class="w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-zinc-800 p-2 md:p-6 text-black">
-        <div id="apartmentIframe3173562">
+<section id="avis" class="py-24 bg-surface-container-lowest overflow-hidden border-y border-white/5">
+    <div class="text-center mb-16"><h2 class="font-headline text-3xl italic text-primary">Guest Reviews • 8.9/10 Excellent</h2></div>
+    <div class="flex">
+        <div class="animate-marquee flex text-white text-zinc-300">
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Very functional accommodation, quiet neighborhood. Feels like home."</p><p class="text-xs text-primary">— Ines</p></div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Great location, superb facilities, safe and secure. Exceptional value."</p><p class="text-xs text-primary">— Joanne</p></div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"Beautiful, well-kept apartment, clean and tastefully furnished."</p><p class="text-xs text-primary">— Rousso</p></div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"We had a pleasant stay in this cozy and friendly apartment."</p><p class="text-xs text-primary">— Edwige</p></div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4">"The accommodation was great, I felt right at home."</p><p class="text-xs text-primary">— Kali</p></div>
+            <div class="review-card bg-[#1c1b1b] p-8 rounded-xl border border-white/5"><p class="italic mb-4 text-zinc-300">"Very functional accommodation, quiet neighborhood. Feels like home."</p><p class="text-xs text-primary">— Ines</p></div>
+        </div>
+    </div>
+</section>
+
+<section id="reserver" class="py-24 px-4 md:px-8 max-w-7xl mx-auto text-center bg-[#131313]">
+    <h2 class="font-headline text-5xl md:text-7xl font-light text-white leading-[0.8] tracking-tighter italic mb-12 uppercase">
+        Book <br> <span class="text-primary/90 ml-12 md:ml-24">your stay</span>
+    </h2>
+    
+    <div class="w-full bg-[#131313] rounded-2xl overflow-hidden border border-white/5">
+        <div id="apartmentIframe3173562" style="background-color: #131313;">
             <script type="text/javascript" src="https://login.smoobu.com/js/Settings/BookingToolIframe.js"></script>
-            <script>BookingToolIframe.initialize({"url": "https://login.smoobu.com/en/booking-tool/iframe/1642752/3173562?newTabAfterSearch=true", "baseUrl": "https://login.smoobu.com", "target": "#apartmentIframe3173562"})</script>
+            <script>
+                BookingToolIframe.initialize({
+                    "url": "https://login.smoobu.com/en/booking-tool/iframe/1642752/3173562?newTabAfterSearch=true", 
+                    "baseUrl": "https://login.smoobu.com", 
+                    "target": "#apartmentIframe3173562"
+                })
+            </script>
         </div>
     </div>
 </section>
@@ -168,9 +202,9 @@
         <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-[10px] uppercase tracking-widest text-zinc-500">
             <a href="gallerie.html" class="hover:text-primary transition-colors text-white">Photo Gallery</a>
             <a href="reglement.html" class="hover:text-primary transition-colors font-medium text-white">House Rules</a>
-            <a href="#book" class="hover:text-primary transition-colors text-white">Availability</a>
+            <a href="#reserver" class="hover:text-primary transition-colors text-white">Availability</a>
         </div>
-        <div class="text-[10px] uppercase tracking-[0.2em] text-zinc-600">© 2026 Escale Paisible • France</div>
+        <div class="text-[10px] uppercase tracking-[0.2em] text-zinc-600">© 2026 Escale Paisible • Mantes-la-Jolie</div>
     </div>
 </footer>
 

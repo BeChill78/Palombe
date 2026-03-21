@@ -178,12 +178,21 @@
     </div>
 </section>
 
-<section id="reserver" class="py-24 px-4 md:px-8 max-w-7xl mx-auto text-center">
-    <h2 class="font-headline text-3xl md:text-4xl mb-12 italic text-primary uppercase tracking-tighter text-white">Réserver votre escale</h2>
-    <div class="w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-zinc-800 p-2 md:p-6 text-black text-white">
-        <div id="apartmentIframe3173562">
+<section id="reserver" class="py-24 px-4 md:px-8 max-w-7xl mx-auto text-center bg-[#131313]">
+    <h2 class="font-headline text-5xl md:text-7xl font-light text-white leading-[0.8] tracking-tighter italic mb-12 uppercase">
+        Réserver <br> <span class="text-primary/90 ml-12 md:ml-24">votre escale</span>
+    </h2>
+    
+    <div class="w-full bg-[#131313] rounded-2xl overflow-hidden border border-white/5">
+        <div id="apartmentIframe3173562" style="background-color: #131313;">
             <script type="text/javascript" src="https://login.smoobu.com/js/Settings/BookingToolIframe.js"></script>
-            <script>BookingToolIframe.initialize({"url": "https://login.smoobu.com/fr/booking-tool/iframe/1642752/3173562?newTabAfterSearch=true", "baseUrl": "https://login.smoobu.com", "target": "#apartmentIframe3173562"})</script>
+            <script>
+                BookingToolIframe.initialize({
+                    "url": "https://login.smoobu.com/fr/booking-tool/iframe/1642752/3173562?newTabAfterSearch=true", 
+                    "baseUrl": "https://login.smoobu.com", 
+                    "target": "#apartmentIframe3173562"
+                })
+            </script>
         </div>
     </div>
 </section>

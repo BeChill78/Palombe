@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Escale Paisible | Règlement Intérieur</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "primary": "#bdc2ff",
+                  "on-primary": "#131e8c",
+                  "background": "#131313",
+                  "surface": "#1c1b1b",
+                  "on-surface": "#e5e2e1",
+                  "surface-container-low": "#1c1b1b",
+                  "surface-container-lowest": "#0e0e0e"
+                },
+                fontFamily: { "headline": ["Noto Serif"], "body": ["Inter"] }
+              }
+            }
+          }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 antialiased">
+
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/90 backdrop-blur-xl border-b border-white/5">
+    <div class="flex justify-between items-center w-full px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="text-xl font-light tracking-[0.1em] uppercase font-headline hover:text-primary transition-colors text-white">
+            Escale Paisible
+        </a>
+        <a href="index.html" class="text-primary font-medium text-[10px] uppercase tracking-widest border-b border-primary/30 pb-1 hover:border-primary transition-all italic">
+            Retour à l'accueil
+        </a>
+    </div>
+</nav>
+
+<main class="pt-32 pb-24 px-6 max-w-5xl mx-auto w-full text-white">
+    <header class="mb-20 text-left">
+        <h1 class="font-headline text-4xl md:text-6xl text-white mb-8 leading-tight tracking-tight italic">
+            Règlement Intérieur <br>& Conditions de Séjour
+        </h1>
+        <p class="text-on-surface/60 text-lg leading-relaxed font-light max-w-3xl">
+            Le respect de ces clauses garantit la sérénité de votre séjour. L'Escale Paisible est un refuge conçu pour le calme et la courtoisie.
+        </p>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24 text-left">
+        <div class="md:col-span-5 bg-surface-container-low p-10 rounded-2xl border border-white/5 flex flex-col justify-between">
+            <div>
+                <span class="material-symbols-outlined text-primary text-3xl mb-6">family_restroom</span>
+                <h3 class="text-primary font-medium uppercase tracking-[0.2em] text-[11px] mb-6 italic">Critères d'accès</h3>
+                <ul class="space-y-4 text-on-surface/80 text-sm font-light">
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary/60 text-lg">check_circle</span>
+                        <span>Âge minimum de l'hôte : 30 ans</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary/60 text-lg">child_care</span>
+                        <span>Enfants autorisés</span>
+                    </li>
+                    <li class="flex items-center gap-3 font-medium text-primary">
+                        <span class="material-symbols-outlined text-primary text-lg">baby_changing_station</span>
+                        <span>Lit bébé disponible sur demande</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="md:col-span-7 bg-surface-container-low p-10 rounded-2xl border border-white/5">
+            <span class="material-symbols-outlined text-primary text-3xl mb-6">home_work</span>
+            <h3 class="text-primary font-medium uppercase tracking-[0.2em] text-[11px] mb-6 italic">Vie de quartier & Animaux</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="flex flex-col gap-2"><span class="material-symbols-outlined text-primary/80">smoke_free</span><span class="text-xs font-medium uppercase tracking-tighter">Non-fumeur</span></div>
+                <div class="flex flex-col gap-2"><span class="material-symbols-outlined text-primary/80">bedtime</span><span class="text-xs font-medium uppercase tracking-tighter">Calme (22h - 06h)</span></div>
+                <div class="flex flex-col gap-2"><span class="material-symbols-outlined text-primary/80">pets</span><span class="text-xs font-medium uppercase tracking-tighter">Animaux (Gratuit)</span></div>
+            </div>
+        </div>
+
+        <div class="md:col-span-12 bg-surface-container-lowest p-10 md:p-12 rounded-2xl border border-white/10">
+            <div class="flex flex-col md:flex-row gap-12 items-start">
+                <div class="w-full md:w-1/3 text-left">
+                    <span class="material-symbols-outlined text-red-400 mb-6">report</span>
+                    <h3 class="text-white font-medium uppercase tracking-[0.2em] text-[11px] mb-4">Interdictions Strictes</h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full text-left">
+                    <div class="flex gap-4 p-4 bg-white/5 rounded-xl"><span class="material-symbols-outlined text-primary">celebration</span><div><h4 class="text-white text-sm font-medium mb-1">Pas de fêtes</h4><p class="text-on-surface/50 text-xs">Événements et réceptions interdits.</p></div></div>
+                    <div class="flex gap-4 p-4 bg-white/5 rounded-xl"><span class="material-symbols-outlined text-primary">business_center</span><div><h4 class="text-white text-sm font-medium mb-1">Usage Privé</h4><p class="text-on-surface/50 text-xs">Activités pro ou lucratives interdites.</p></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+        <div class="bg-surface-container-low p-10 rounded-2xl border border-white/5 flex items-center justify-between">
+            <div>
+                <h3 class="text-primary font-medium text-[10px] uppercase tracking-widest mb-2">Dépôt de garantie</h3>
+                <p class="text-3xl font-headline italic">300 €</p>
+            </div>
+            <span class="material-symbols-outlined text-white/10 text-6xl">account_balance_wallet</span>
+        </div>
+        <div class="bg-surface-container-low p-10 rounded-2xl border border-white/5 flex flex-col justify-center">
+            <h3 class="text-primary font-medium text-[10px] uppercase tracking-widest mb-4">Paiements (via Smoobu)</h3>
+            <div class="flex gap-4 mb-4">
+                <span class="material-symbols-outlined text-primary/80">credit_card</span>
+                <span class="material-symbols-outlined text-primary/80">contactless</span>
+                <span class="material-symbols-outlined text-primary/80">account_balance</span>
+            </div>
+            <p class="text-on-surface/70 text-xs font-light">Carte Bancaire, Apple Pay ou Virement sécurisé.</p>
+        </div>
+    </section>
+</main>
+
+<footer class="w-full py-12 px-8 border-t border-white/5 text-center">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="font-headline text-lg italic text-white">Escale Paisible</div>
+        <div class="font-sans text-[10px] tracking-widest text-on-surface/30 uppercase italic">© 2026 Escale Paisible • Mantes-la-Jolie</div>
+    </div>
+</footer>
+
+<a href="https://wa.me/33683525699" target="_blank" class="fixed bottom-8 right-8 z-[100] group flex items-center gap-3">
+    <span class="bg-surface-container-low border border-white/5 text-xs uppercase tracking-widest px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-2xl text-white">Une question ?</span>
+    <div class="bg-primary text-[#131e8c] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+        <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </div>
+</a>
+
+</body>
+</html>

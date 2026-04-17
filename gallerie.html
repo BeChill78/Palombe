@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Escale Paisible | Visite Photo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#bdc2ff",
+              "on-primary": "#131e8c",
+              "background": "#131313",
+              "surface": "#1c1b1b",
+              "on-surface": "#e5e2e1"
+            },
+            fontFamily: { "headline": ["Noto Serif", "serif"], "body": ["Inter", "sans-serif"] }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* ─── Base ─────────────────────────────────────── */
+      * { -webkit-font-smoothing: antialiased; }
+      html { scroll-behavior: smooth; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+
+      /* ─── Scroll progress ─────────────────────────── */
+      #progress-bar {
+        position: fixed; top: 0; left: 0; z-index: 200;
+        height: 2px;
+        background: linear-gradient(90deg, #bdc2ff, #818cf8);
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      /* ─── Entrance animations ────────────────────────── */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+      [data-animate] { opacity: 0; }
+      [data-animate].is-visible { animation: fadeUp 0.8s cubic-bezier(0.2, 0, 0, 1) forwards; }
+      [data-delay="100"] { animation-delay: 0.1s !important; }
+      [data-delay="200"] { animation-delay: 0.2s !important; }
+      [data-delay="300"] { animation-delay: 0.3s !important; }
+      [data-delay="400"] { animation-delay: 0.4s !important; }
+
+      /* ─── Sticky nav pills ───────────────────────────── */
+      .room-pill {
+        display: flex; align-items: center; gap: 6px;
+        padding: 6px 14px; border-radius: 999px;
+        font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.4);
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.06);
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        white-space: nowrap; cursor: pointer; text-decoration: none;
+      }
+      .room-pill:hover { color: #fff; border-color: rgba(189,194,255,0.3); background: rgba(189,194,255,0.05); }
+      .room-pill.active {
+        color: #131e8c;
+        background: linear-gradient(135deg, #bdc2ff, #818cf8);
+        border-color: transparent;
+      }
+      .room-pill.active .pill-icon { color: #131e8c; }
+
+      /* ─── Lightbox ───────────────────────────────────── */
+      #lightbox {
+        display: none;
+        position: fixed; inset: 0; z-index: 1000;
+        background: rgba(0,0,0,0.93);
+        backdrop-filter: blur(20px);
+        align-items: center; justify-content: center;
+        flex-direction: column; gap: 16px;
+      }
+      #lightbox.open { display: flex; }
+
+      @keyframes lbIn {
+        from { opacity: 0; transform: scale(0.94); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+      #lightbox-img {
+        max-width: min(90vw, 1200px);
+        max-height: 80vh;
+        object-fit: contain;
+        border-radius: 12px;
+        animation: lbIn 0.35s cubic-bezier(0.2, 0, 0, 1);
+      }
+      .lb-btn {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        width: 48px; height: 48px; border-radius: 50%;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .lb-btn:hover { background: rgba(189,194,255,0.15); border-color: rgba(189,194,255,0.4); color: #bdc2ff; }
+      #lb-prev { left: 20px; }
+      #lb-next { right: 20px; }
+      #lb-close {
+        position: absolute; top: 20px; right: 20px;
+        width: 40px; height: 40px; border-radius: 50%;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; cursor: pointer; transition: all 0.25s ease;
+      }
+      #lb-close:hover { background: rgba(255,255,255,0.12); }
+      #lb-caption {
+        font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+      }
+      #lb-counter {
+        font-size: 11px; letter-spacing: 0.15em;
+        color: rgba(189,194,255,0.6); font-family: 'Inter', sans-serif;
+      }
+
+      /* ─── Photo cards ──────────────────────────────── */
+      .photo-card {
+        position: relative; overflow: hidden; border-radius: 16px;
+        cursor: zoom-in;
+        background: #1c1b1b;
+      }
+      .photo-card img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 0.7s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s ease;
+      }
+      .photo-card:hover img { transform: scale(1.04); }
+      .photo-card .photo-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+        opacity: 0; transition: opacity 0.4s ease;
+        display: flex; align-items: flex-end; padding: 16px;
+      }
+      .photo-card:hover .photo-overlay { opacity: 1; }
+      .photo-overlay-icon {
+        width: 36px; height: 36px; border-radius: 50%;
+        background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.15);
+        display: flex; align-items: center; justify-content: center;
+        color: white; margin-left: auto;
+      }
+
+      /* ─── Section number ─────────────────────────────── */
+      .section-number {
+        font-family: 'Noto Serif', serif;
+        font-size: 72px; font-weight: 300; line-height: 1;
+        color: rgba(189,194,255,0.08);
+        letter-spacing: -0.02em;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      /* ─── Hero ──────────────────────────────────────── */
+      .btn-primary {
+        background: linear-gradient(135deg, #bdc2ff 0%, #818cf8 100%);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+      }
+      .btn-primary:hover { background: linear-gradient(135deg, #cdd0ff 0%, #9ba3ff 100%); transform: translateY(-1px); }
+
+      /* ─── Back to top ─────────────────────────────── */
+      #backToTop {
+        opacity: 0; visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+      }
+      #backToTop.show { opacity: 1; visibility: visible; }
+
+      /* ─── Section label ───────────────────────────── */
+      .section-label {
+        font-size: 10px; letter-spacing: 0.4em;
+        text-transform: uppercase; font-weight: 700;
+        color: rgba(189,194,255,0.5);
+      }
+
+      /* ─── Feature tag ─────────────────────────────── */
+      .feature-tag {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 10px; border-radius: 999px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        font-size: 10px; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.5);
+      }
+      .feature-tag .material-symbols-outlined { font-size: 13px; color: #bdc2ff; }
+    </style>
+</head>
+<body class="bg-[#131313] text-[#e5e2e1] font-body antialiased overflow-x-hidden">
+
+<!-- Progress bar -->
+<div id="progress-bar"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     LIGHTBOX
+════════════════════════════════════════════════════════ -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Visionneuse photo">
+    <div id="lb-close" onclick="closeLightbox()" title="Fermer (Échap)">
+        <span class="material-symbols-outlined text-lg">close</span>
+    </div>
+    <div id="lb-counter" class="absolute top-20 left-1/2 -translate-x-1/2"></div>
+    <div id="lb-prev" class="lb-btn" onclick="lbNav(-1)" title="Photo précédente (←)">
+        <span class="material-symbols-outlined">chevron_left</span>
+    </div>
+    <img id="lightbox-img" src="" alt="Photo agrandie"/>
+    <div id="lb-next" class="lb-btn" onclick="lbNav(1)" title="Photo suivante (→)">
+        <span class="material-symbols-outlined">chevron_right</span>
+    </div>
+    <div id="lb-caption"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════ -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/90 backdrop-blur-xl transition-all duration-500" style="border-bottom: 1px solid rgba(255,255,255,0.04)">
+    <div class="flex justify-between items-center w-full px-8 py-5 max-w-7xl mx-auto">
+        <a href="index.html" class="flex items-center gap-3 text-white/50 hover:text-white transition-colors duration-300 group">
+            <span class="material-symbols-outlined text-lg group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+            <span class="font-headline text-base italic tracking-wide">Escale Paisible</span>
+        </a>
+        <div class="hidden md:block section-label">Visite Photo</div>
+        <a href="index.html#reserver" class="btn-primary text-on-primary px-5 py-2 text-[11px] uppercase tracking-widest font-bold rounded-sm">
+            Réserver
+        </a>
+    </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════ -->
+<header class="relative h-[55vh] min-h-[400px] w-full flex items-end overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="assets/Images/Salon.jpg" alt="Salon — Escale Paisible"
+             class="w-full h-full object-cover scale-105" id="hero-img"
+             style="transition: transform 8s cubic-bezier(0.2,0,0,1); transform-origin: center 40%"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#131313] via-black/30 to-black/20"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#131313]/60 to-transparent"></div>
+    </div>
+    <div class="relative z-10 px-8 md:px-16 pb-16 w-full max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+            <div>
+                <span data-animate class="section-label block mb-4">L'Appartement en images</span>
+                <h1 data-animate data-delay="100" class="font-headline text-5xl md:text-7xl font-light italic text-white leading-none">
+                    Visite<br><span class="text-primary/80">Photo</span>
+                </h1>
+            </div>
+            <div data-animate data-delay="200" class="flex items-center gap-4 pb-1">
+                <div class="text-right">
+                    <p class="text-white text-2xl font-headline italic font-light" id="photo-total-count">— photos</p>
+                    <p class="section-label mt-1">8 espaces</p>
+                </div>
+                <div class="w-px h-12 bg-white/10"></div>
+                <a href="#salon" class="btn-primary text-on-primary px-6 py-3 text-[11px] uppercase tracking-widest font-bold rounded-sm">
+                    Commencer la visite
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════
+     ROOM PILLS — sticky
+════════════════════════════════════════════════════════ -->
+<div id="room-nav" class="sticky top-[72px] z-40 bg-[#131313]/95 backdrop-blur-xl py-4 px-6 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto overflow-x-auto hide-scrollbar">
+        <div class="flex items-center gap-2 min-w-max">
+            <a href="#salon"   class="room-pill active"   data-target="salon">
+                <span class="material-symbols-outlined pill-icon text-[13px]">weekend</span> Salon
+            </a>
+            <a href="#cuisine"  class="room-pill" data-target="cuisine">
+                <span class="material-symbols-outlined pill-icon text-[13px]">countertops</span> Cuisine
+            </a>
+            <a href="#repas"    class="room-pill" data-target="repas">
+                <span class="material-symbols-outlined pill-icon text-[13px]">dining</span> Repas
+            </a>
+            <a href="#chambre"  class="room-pill" data-target="chambre">
+                <span class="material-symbols-outlined pill-icon text-[13px]">bed</span> Chambre
+            </a>
+            <a href="#sdb"      class="room-pill" data-target="sdb">
+                <span class="material-symbols-outlined pill-icon text-[13px]">shower</span> Salle de bain
+            </a>
+            <a href="#jardin"   class="room-pill" data-target="jardin">
+                <span class="material-symbols-outlined pill-icon text-[13px]">yard</span> Jardin
+            </a>
+            <a href="#entree"   class="room-pill" data-target="entree">
+                <span class="material-symbols-outlined pill-icon text-[13px]">door_front</span> Entrée
+            </a>
+            <a href="#garage"   class="room-pill" data-target="garage">
+                <span class="material-symbols-outlined pill-icon text-[13px]">garage</span> Garage
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     GALLERY SECTIONS
+════════════════════════════════════════════════════════ -->
+<main class="pb-32 px-6 max-w-7xl mx-auto">
+    <div class="space-y-36 pt-20">
+
+        <!-- ── 01 / SALON ─────────────────────────── -->
+        <section id="salon" class="gallery-section" data-room="salon">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+
+                <!-- Sticky sidebar -->
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36">
+                    <div data-animate>
+                        <div class="section-number mb-2">01</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Salon</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Espace lumineux et chaleureux pour se retrouver en toute détente.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2">
+                        <span class="feature-tag"><span class="material-symbols-outlined">tv</span>Télévision</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">thermostat</span>Chauffage</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">menu_book</span>Bibliothèque</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">casino</span>Jeux de société</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">wifi</span>Fibre 510 Mb/s</span>
+                    </div>
+                </div>
+
+                <!-- Photos -->
+                <div class="md:col-span-8 grid grid-cols-2 gap-3">
+                    <div data-animate data-delay="100" class="col-span-2 aspect-video photo-card" onclick="openLightbox(this)" data-caption="Salon">
+                        <img src="assets/Images/Salon.jpg" alt="Salon"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="200" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Espace repas">
+                        <img src="assets/Images/SalleAManger.jpg" alt="Espace repas"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="300" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Entrée">
+                        <img src="assets/Images/Entree.jpg" alt="Entrée"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 02 / CUISINE ───────────────────────── -->
+        <section id="cuisine" class="gallery-section" data-room="cuisine">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36 order-1 md:order-2 md:text-right">
+                    <div data-animate>
+                        <div class="section-number mb-2">02</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Cuisine</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Entièrement équipée pour cuisiner comme à la maison.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2 md:justify-end">
+                        <span class="feature-tag"><span class="material-symbols-outlined">coffee_maker</span>Nespresso</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">blender</span>Blender</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">kitchen</span>Réfrigérateur</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">local_fire_department</span>Plaques induction</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8 grid grid-cols-1 gap-3 order-2 md:order-1">
+                    <div data-animate data-delay="100" class="aspect-video photo-card" onclick="openLightbox(this)" data-caption="Cuisine">
+                        <img src="assets/Images/Cuisine.jpg" alt="Cuisine"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="200" class="aspect-[21/9] photo-card" onclick="openLightbox(this)" data-caption="Cuisine — vue côté">
+                        <img src="assets/Images/CuisineCote.jpg" alt="Cuisine côté"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 03 / REPAS ─────────────────────────── -->
+        <section id="repas" class="gallery-section" data-room="repas">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36">
+                    <div data-animate>
+                        <div class="section-number mb-2">03</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Espace repas</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Une table conviviale pour vos dîners en famille ou entre amis.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2">
+                        <span class="feature-tag"><span class="material-symbols-outlined">dining</span>Table 4 personnes</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">light_mode</span>Lumineux</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8">
+                    <div data-animate data-delay="100" class="aspect-video photo-card" onclick="openLightbox(this)" data-caption="Salle à manger">
+                        <img src="assets/Images/SalleAManger.jpg" alt="Salle à manger"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 04 / CHAMBRE ───────────────────────── -->
+        <section id="chambre" class="gallery-section" data-room="chambre">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36 order-1 md:order-2 md:text-right">
+                    <div data-animate>
+                        <div class="section-number mb-2">04</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Chambre</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Un cocon de sérénité. Literie haut de gamme pour un sommeil parfait.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2 md:justify-end">
+                        <span class="feature-tag"><span class="material-symbols-outlined">bed</span>Lit queen size</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">volume_mute</span>Calme absolu</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">checkroom</span>Rangements</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">blinds_closed</span>Volets</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8 grid grid-cols-2 gap-3 order-2 md:order-1">
+                    <div data-animate data-delay="100" class="col-span-2 aspect-video photo-card" onclick="openLightbox(this)" data-caption="Chambre">
+                        <img src="assets/Images/chambreglobale.jpg" alt="Chambre"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="200" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Lit — vue large">
+                        <img src="assets/Images/LitLarge.jpg" alt="Lit"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="300" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Lit — détail">
+                        <img src="assets/Images/LitZoom.jpg" alt="Lit zoom"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 05 / SALLE DE BAIN ─────────────────── -->
+        <section id="sdb" class="gallery-section" data-room="sdb">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36">
+                    <div data-animate>
+                        <div class="section-number mb-2">05</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Salle de bain</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Spacieuse et lumineuse. Tout le nécessaire fourni.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2">
+                        <span class="feature-tag"><span class="material-symbols-outlined">shower</span>Douche spacieuse</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">dry_cleaning</span>Serviettes</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">soap</span>Produits fournis</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8 grid grid-cols-2 gap-3">
+                    <div data-animate data-delay="100" class="col-span-2 aspect-video photo-card" onclick="openLightbox(this)" data-caption="Salle de bain">
+                        <img src="assets/Images/Baignoire.jpg" alt="Salle de bain"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="200" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Lavabo">
+                        <img src="assets/Images/Lavabo.jpg" alt="Lavabo"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="300" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="WC">
+                        <img src="assets/Images/Toilettes.jpg" alt="WC"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 06 / JARDIN ────────────────────────── -->
+        <section id="jardin" class="gallery-section" data-room="jardin">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36 order-1 md:order-2 md:text-right">
+                    <div data-animate>
+                        <div class="section-number mb-2">06</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Le Jardin</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Un espace extérieur privé — votre coin de verdure en pleine ville.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2 md:justify-end">
+                        <span class="feature-tag"><span class="material-symbols-outlined">yard</span>Jardin privé</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">deck</span>Mobilier outdoor</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">pedal_bike</span>Stockage vélos</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8 grid grid-cols-2 gap-3 order-2 md:order-1">
+                    <div data-animate data-delay="100" class="col-span-2 aspect-[16/9] photo-card" onclick="openLightbox(this)" data-caption="Jardin privé">
+                        <img src="assets/Images/Jardin.jpg" alt="Jardin"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="200" class="aspect-video col-span-2 photo-card" onclick="openLightbox(this)" data-caption="Espace vélos">
+                        <img src="assets/Images/velos.jpg" alt="Espace vélos"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 07 / ENTRÉE ────────────────────────── -->
+        <section id="entree" class="gallery-section" data-room="entree">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36">
+                    <div data-animate>
+                        <div class="section-number mb-2">07</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Entrée</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Accès sécurisé à la résidence, dans un quartier calme.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2">
+                        <span class="feature-tag"><span class="material-symbols-outlined">lock</span>Accès sécurisé</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">elevator</span>Ascenseur</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8">
+                    <div data-animate data-delay="100" class="aspect-video photo-card" onclick="openLightbox(this)" data-caption="Entrée du bâtiment">
+                        <img src="assets/Images/EntreeBatiment.jpg" alt="Entrée bâtiment"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── 08 / GARAGE ────────────────────────── -->
+        <section id="garage" class="gallery-section" data-room="garage">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                <div class="md:col-span-4 space-y-6 md:sticky md:top-36 order-1 md:order-2 md:text-right">
+                    <div data-animate>
+                        <div class="section-number mb-2">08</div>
+                        <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Garage</h2>
+                        <p class="text-white/40 font-light text-sm mt-4 leading-relaxed">Place privée sécurisée en sous-sol. Incluse dans toutes les réservations.</p>
+                    </div>
+                    <div data-animate data-delay="100" class="flex flex-wrap gap-2 md:justify-end">
+                        <span class="feature-tag"><span class="material-symbols-outlined">lock</span>Sécurisé</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">directions_car</span>Place numérotée</span>
+                        <span class="feature-tag"><span class="material-symbols-outlined">elevator</span>Accès ascenseur</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8 grid grid-cols-3 gap-3 order-2 md:order-1">
+                    <div data-animate data-delay="100" class="col-span-3 aspect-video photo-card" onclick="openLightbox(this)" data-caption="Porte du garage">
+                        <img src="assets/Images/PorteGarage.jpg" alt="Porte garage"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="150" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Porte ouverte">
+                        <img src="assets/Images/PorteOuverte.jpg" alt="Porte ouverte"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="200" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Entrée garage">
+                        <img src="assets/Images/EntreeGarage.jpg" alt="Entrée garage"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="250" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Virage garage">
+                        <img src="assets/Images/VirageGarage.jpg" alt="Virage garage"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="300" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Place numérotée 21">
+                        <img src="assets/Images/Place21.jpg" alt="Place 21"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                    <div data-animate data-delay="350" class="aspect-square photo-card" onclick="openLightbox(this)" data-caption="Accès ascenseur">
+                        <img src="assets/Images/PorteAscenceur.jpg" alt="Porte ascenseur"/>
+                        <div class="photo-overlay"><div class="photo-overlay-icon"><span class="material-symbols-outlined text-sm">zoom_in</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /space-y-36 -->
+
+    <!-- CTA finale -->
+    <div data-animate class="mt-36 rounded-3xl overflow-hidden relative">
+        <img src="assets/Images/Jardin.jpg" alt="Jardin" class="absolute inset-0 w-full h-full object-cover opacity-25"/>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/80 to-[#131313]/40"></div>
+        <div class="relative z-10 p-12 md:p-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div>
+                <span class="section-label block mb-4">Convaincu ?</span>
+                <h2 class="font-headline text-4xl md:text-5xl italic text-white">Réservez votre escale.</h2>
+                <p class="text-white/40 font-light mt-3 max-w-md">Disponibilités en temps réel — réservation instantanée et sécurisée.</p>
+            </div>
+            <a href="index.html#reserver" class="btn-primary text-on-primary px-10 py-5 text-[11px] uppercase tracking-widest font-bold rounded-sm shrink-0">
+                Vérifier les disponibilités
+            </a>
+        </div>
+    </div>
+
+    <footer class="mt-20 pt-10 text-center" style="border-top: 1px solid rgba(255,255,255,0.04)">
+        <p class="text-[10px] uppercase tracking-[0.2em] text-white/20">© 2026 Escale Paisible · Mantes-la-Jolie</p>
+    </footer>
+</main>
+
+<!-- Back to top -->
+<button id="backToTop" onclick="scrollToTop()"
+        class="fixed bottom-8 left-8 z-[60] w-11 h-11 rounded-full flex items-center justify-center text-white transition-all duration-400"
+        style="background: rgba(189,194,255,0.1); border: 1px solid rgba(189,194,255,0.2);">
+    <span class="material-symbols-outlined text-primary text-lg">arrow_upward</span>
+</button>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════ -->
+<script>
+    /* ── Photo inventory for lightbox navigation ── */
+    const allPhotos = [];
+    let currentLbIndex = 0;
+
+    function buildPhotoInventory() {
+        document.querySelectorAll('.photo-card').forEach((card, i) => {
+            const img = card.querySelector('img');
+            const caption = card.dataset.caption || '';
+            allPhotos.push({ src: img.src, caption });
+            card.dataset.lbIndex = i;
+        });
+        const total = allPhotos.length;
+        const el = document.getElementById('photo-total-count');
+        if (el) el.textContent = total + ' photos';
+    }
+
+    /* ── Lightbox ── */
+    function openLightbox(card) {
+        currentLbIndex = parseInt(card.dataset.lbIndex);
+        renderLightbox();
+        document.getElementById('lightbox').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function renderLightbox() {
+        const data = allPhotos[currentLbIndex];
+        const img = document.getElementById('lightbox-img');
+        img.style.animation = 'none';
+        img.src = data.src;
+        img.alt = data.caption;
+        void img.offsetWidth; // reflow to retrigger animation
+        img.style.animation = '';
+        document.getElementById('lb-caption').textContent = data.caption;
+        document.getElementById('lb-counter').textContent = (currentLbIndex + 1) + ' / ' + allPhotos.length;
+    }
+
+    function lbNav(dir) {
+        currentLbIndex = (currentLbIndex + dir + allPhotos.length) % allPhotos.length;
+        renderLightbox();
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (!document.getElementById('lightbox').classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') lbNav(1);
+        if (e.key === 'ArrowLeft')  lbNav(-1);
+    });
+
+    /* ── Entrance animations ── */
+    const animObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                animObs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('[data-animate]').forEach(el => animObs.observe(el));
+
+    /* ── Active room pill on scroll ── */
+    const sections = document.querySelectorAll('.gallery-section');
+    const pills    = document.querySelectorAll('.room-pill');
+
+    const sectionObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const room = entry.target.dataset.room;
+                pills.forEach(p => {
+                    p.classList.toggle('active', p.dataset.target === room);
+                });
+                // Scroll active pill into view in the pill bar
+                const activePill = document.querySelector(`.room-pill[data-target="${room}"]`);
+                if (activePill) activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(s => sectionObs.observe(s));
+
+    /* ── Scroll progress bar ── */
+    window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        const pct   = total > 0 ? (window.scrollY / total) * 100 : 0;
+        document.getElementById('progress-bar').style.width = pct + '%';
+
+        // Back to top
+        const btn = document.getElementById('backToTop');
+        btn.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+
+    /* ── Hero parallax ── */
+    const heroImg = document.getElementById('hero-img');
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if (y < window.innerHeight) heroImg.style.transform = `scale(1.05) translateY(${y * 0.1}px)`;
+    }, { passive: true });
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    /* ── Init ── */
+    buildPhotoInventory();
+</script>
+
+</body>
+</html>

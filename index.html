@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Escale Paisible | Jardin Privé / Giverny / Paris</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#bdc2ff",
+              "primary-deep": "#818cf8",
+              "background": "#131313",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container-high": "#2a2a2a"
+            },
+            fontFamily: { "headline": ["Noto Serif", "serif"], "body": ["Inter", "sans-serif"] }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* ─── Base ─────────────────────────────────────── */
+      html { scroll-behavior: smooth; }
+      * { -webkit-font-smoothing: antialiased; }
+
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+
+      /* ─── Entrance animations ────────────────────────── */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(32px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.96); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+
+      [data-animate] { opacity: 0; }
+      [data-animate].is-visible {
+        animation: fadeUp 0.9s cubic-bezier(0.2, 0, 0, 1) forwards;
+      }
+      [data-animate="fade"].is-visible {
+        animation: fadeIn 1s cubic-bezier(0.2, 0, 0, 1) forwards;
+      }
+      [data-animate="scale"].is-visible {
+        animation: scaleIn 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+      }
+      [data-delay="100"] { animation-delay: 0.1s !important; }
+      [data-delay="200"] { animation-delay: 0.2s !important; }
+      [data-delay="300"] { animation-delay: 0.3s !important; }
+      [data-delay="400"] { animation-delay: 0.4s !important; }
+      [data-delay="500"] { animation-delay: 0.5s !important; }
+      [data-delay="600"] { animation-delay: 0.6s !important; }
+
+      /* ─── Marquee ─────────────────────────────────── */
+      @keyframes marquee {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-marquee {
+        display: flex;
+        width: max-content;
+        animation: marquee 60s linear infinite;
+      }
+      .marquee-wrap {
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      }
+      .review-card { width: 380px; margin: 0 12px; flex-shrink: 0; }
+
+      /* ─── Bento ─────────────────────────────────── */
+      .bento-glow::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 180px 180px at 0% 0%, rgba(189, 194, 255, 0.06), transparent 70%);
+        pointer-events: none;
+        z-index: 2;
+        transition: opacity 0.6s ease;
+      }
+      .bento-glow:hover::after {
+        opacity: 0;
+      }
+
+      /* ─── Primary gradient button ─────────────────── */
+      .btn-primary {
+        background: linear-gradient(135deg, #bdc2ff 0%, #818cf8 100%);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #cdd0ff 0%, #9ba3ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(129, 140, 248, 0.25);
+      }
+
+      /* ─── Stats strip ─────────────────────────────── */
+      .stat-divider {
+        width: 1px;
+        height: 32px;
+        background: rgba(255,255,255,0.08);
+      }
+
+      /* ─── Noise texture overlay ───────────────────── */
+      .noise::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ─── Scroll indicator ────────────────────────── */
+      @keyframes scrollBounce {
+        0%, 100% { transform: translateY(0); opacity: 0.6; }
+        50%       { transform: translateY(6px); opacity: 1; }
+      }
+      .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
+
+      /* ─── Nav scroll state ────────────────────────── */
+      nav.scrolled {
+        background: rgba(19,19,19,0.95) !important;
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+      }
+
+      /* ─── Section label ───────────────────────────── */
+      .section-label {
+        font-size: 10px;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: rgba(189, 194, 255, 0.6);
+      }
+
+      /* ─── Hero gradient line ──────────────────────── */
+      .hero-line {
+        width: 1px;
+        height: 80px;
+        background: linear-gradient(to bottom, transparent, rgba(189,194,255,0.4), transparent);
+      }
+
+      /* ─── Widget styles ───────────────────────────── */
+      #reserver,
+      #bookWidget-162534-322702-0-1776347520,
+      #bookWidget-162534-322702-0-1776347520 * {
+        background-color: #0b0e14 !important;
+        color: #ffffff !important;
+        font-family: 'Inter', sans-serif !important;
+        border-color: rgba(255,255,255,0.08) !important;
+      }
+      #bookWidget-162534-322702-0-1776347520 input,
+      #bookWidget-162534-322702-0-1776347520 select {
+        background-color: rgba(255,255,255,0.04) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+        transition: border-color 0.3s ease !important;
+      }
+      #bookWidget-162534-322702-0-1776347520 input:focus,
+      #bookWidget-162534-322702-0-1776347520 select:focus {
+        border-color: #bdc2ff !important;
+        outline: none !important;
+      }
+      #bookWidget-162534-322702-0-1776347520 .bw-bookbutton,
+      #bookWidget-162534-322702-0-1776347520 button {
+        background: linear-gradient(135deg, #bdc2ff 0%, #818cf8 100%) !important;
+        color: #131e8c !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+        border-radius: 8px !important;
+        width: 100% !important;
+        padding: 18px !important;
+        margin-top: 20px !important;
+        border: none !important;
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+        cursor: pointer !important;
+      }
+      #bookWidget-162534-322702-0-1776347520 .bw-bookbutton:hover,
+      #bookWidget-162534-322702-0-1776347520 button:hover {
+        background: linear-gradient(135deg, #cdd0ff 0%, #9ba3ff 100%) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 20px 40px rgba(129, 140, 248, 0.3) !important;
+      }
+      .bw-container { box-shadow: none !important; }
+    </style>
+</head>
+<body class="bg-[#131313] text-[#e5e2e1] font-body antialiased overflow-x-hidden">
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════ -->
+<nav id="main-nav" class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl transition-all duration-500">
+    <div class="flex justify-between items-center w-full px-8 py-7 max-w-7xl mx-auto transition-all duration-500">
+        <div class="text-xl font-light tracking-[0.12em] uppercase font-headline text-white">Escale Paisible</div>
+        <div class="hidden md:flex items-center gap-10">
+            <div class="flex items-center gap-8 text-[11px] uppercase tracking-widest pr-10" style="border-right: 1px solid rgba(255,255,255,0.08)">
+                <a href="#appartement" class="text-white/50 hover:text-white transition-colors duration-300">L'Appartement</a>
+                <a href="#equipements" class="text-white/50 hover:text-white transition-colors duration-300">Équipements</a>
+                <a href="local.html" class="text-white/50 hover:text-white transition-colors duration-300">Guide Local</a>
+                <a href="gallerie.html" class="text-primary flex items-center gap-1.5 hover:text-white transition-colors duration-300">
+                    Galerie <span class="material-symbols-outlined text-[13px]">photo_library</span>
+                </a>
+                <a href="#avis" class="text-white/50 hover:text-white transition-colors duration-300">Avis</a>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase">
+                <button onclick="localStorage.setItem('language_preference','fr'); location.reload();" class="text-primary">FR</button>
+                <span class="text-white/20">|</span>
+                <a href="en.html" onclick="localStorage.setItem('language_preference','en');" class="text-white/30 hover:text-white/80 transition-colors">EN</a>
+            </div>
+            <a href="#reserver" class="btn-primary text-[#131e8c] px-6 py-2.5 font-semibold text-[11px] uppercase tracking-wider rounded-sm">
+                Réserver
+            </a>
+        </div>
+        <button class="md:hidden text-white/70 hover:text-white transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+    </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════ -->
+<header id="appartement" class="relative min-h-screen w-full flex items-center overflow-hidden">
+    <!-- Background image + overlays -->
+    <div class="absolute inset-0">
+        <img alt="Salon de l'Escale Paisible" class="w-full h-full object-cover scale-[1.03]" src="assets/Images/Salon.jpg"
+             style="transition: transform 8s cubic-bezier(0.2, 0, 0, 1); transform-origin: center center;" id="hero-img"/>
+        <!-- Cinematic gradient -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/70"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#131313] via-transparent to-transparent opacity-80"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-8 md:px-16 w-full max-w-[1600px] mx-auto pt-28">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+
+            <!-- Left: main copy -->
+            <div class="md:col-span-7 space-y-10">
+                <!-- Badge -->
+                <div data-animate data-delay="100" class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 backdrop-blur-md" style="border: 1px solid rgba(189,194,255,0.15)">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    <span class="text-[10px] uppercase tracking-[0.4em] text-primary font-bold">Mantes-la-Jolie · Île-de-France</span>
+                </div>
+
+                <!-- Headline -->
+                <div data-animate data-delay="200">
+                    <h1 class="font-headline font-light text-white leading-[0.85] tracking-tighter italic">
+                        <span class="block text-7xl md:text-8xl lg:text-[6.5rem]">Escale</span>
+                        <span class="block text-7xl md:text-8xl lg:text-[6.5rem] ml-12 md:ml-20 text-primary/90">Paisible</span>
+                    </h1>
+                </div>
+
+                <!-- Tagline -->
+                <p data-animate data-delay="300" class="font-headline text-xl md:text-2xl text-white/70 italic leading-snug max-w-sm">
+                    "Oubliez le stress &amp; le bruit."
+                </p>
+
+                <!-- CTAs -->
+                <div data-animate data-delay="400" class="flex flex-wrap items-center gap-6 pt-2">
+                    <a href="#reserver" class="btn-primary text-[#131e8c] px-10 py-4 font-semibold text-[11px] uppercase tracking-widest rounded-sm">
+                        Vérifier les disponibilités
+                    </a>
+                    <a href="#equipements" class="flex items-center gap-2 text-white/60 hover:text-white text-[11px] uppercase tracking-widest transition-colors duration-300 group">
+                        Explorer l'appartement
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform duration-300">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <!-- Social proof strip -->
+                <div data-animate data-delay="500" class="flex items-center gap-5 pt-4">
+                    <div class="flex -space-x-2">
+                        <div class="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-[9px] font-bold text-primary">I</div>
+                        <div class="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-[9px] font-bold text-primary">J</div>
+                        <div class="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-[9px] font-bold text-primary">E</div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1 mb-0.5">
+                            <span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                            <span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                            <span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                            <span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                            <span class="material-symbols-outlined text-[13px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                        </div>
+                        <p class="text-[10px] text-white/40 uppercase tracking-widest">8.9/10 · 29+ avis Booking.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: info card -->
+            <div data-animate data-delay="400" class="hidden md:block md:col-span-5 lg:col-span-4 lg:col-start-9">
+                <div class="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-8 space-y-6" style="border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)">
+                    <p class="text-base font-light leading-relaxed text-white/80">
+                        Ici, vous ne réservez pas seulement <span class="text-white font-medium">45 m²</span>, vous réservez une véritable escale de sérénité avec <span class="italic text-primary">jardin privé</span>. 🌿
+                    </p>
+                    <p class="text-sm text-white/40 font-light leading-relaxed">
+                        Que vous rentriez des nymphéas de <strong class="text-white/70 font-medium">Giverny</strong> (25 min) ou d'une journée à Versailles, ce cocon est votre refuge.
+                    </p>
+                    <div class="space-y-2.5 pt-2">
+                        <div class="flex items-center gap-3 text-white/70 hover:text-white transition-colors duration-300">
+                            <span class="material-symbols-outlined text-primary text-base">coffee</span>
+                            <span class="text-[11px] uppercase tracking-widest font-medium">Café en terrasse</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-white/70 hover:text-white transition-colors duration-300">
+                            <span class="material-symbols-outlined text-primary text-base">verified_user</span>
+                            <span class="text-[11px] uppercase tracking-widest font-medium">Résidence sécurisée</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-white/70 hover:text-white transition-colors duration-300">
+                            <span class="material-symbols-outlined text-primary text-base">directions_car</span>
+                            <span class="text-[11px] uppercase tracking-widest font-medium">Parking privé inclus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 scroll-indicator">
+        <span class="text-[9px] uppercase tracking-[0.3em] text-white/30">Défiler</span>
+        <span class="material-symbols-outlined text-white/30 text-lg">keyboard_arrow_down</span>
+    </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════
+     STATS STRIP
+════════════════════════════════════════════════════════ -->
+<div class="bg-[#0e0e0e] py-10 px-8 overflow-hidden">
+    <div class="max-w-5xl mx-auto">
+        <div data-animate class="flex flex-wrap items-center justify-center gap-8 md:gap-0 md:divide-x md:divide-white/[0.06]">
+            <div class="flex flex-col items-center px-12 gap-1">
+                <span class="font-headline text-3xl font-light italic text-primary">45 m²</span>
+                <span class="section-label">Surface</span>
+            </div>
+            <div class="flex flex-col items-center px-12 gap-1">
+                <span class="font-headline text-3xl font-light italic text-white">8.9<span class="text-lg text-white/40">/10</span></span>
+                <span class="section-label">Note Booking.com</span>
+            </div>
+            <div class="flex flex-col items-center px-12 gap-1">
+                <span class="font-headline text-3xl font-light italic text-white">25 <span class="text-lg text-white/40">min</span></span>
+                <span class="section-label">de Giverny</span>
+            </div>
+            <div class="flex flex-col items-center px-12 gap-1">
+                <span class="font-headline text-3xl font-light italic text-white">60 <span class="text-lg text-white/40">min</span></span>
+                <span class="section-label">de Paris</span>
+            </div>
+            <div class="flex flex-col items-center px-12 gap-1">
+                <span class="font-headline text-3xl font-light italic text-white">P<span class="text-lg text-white/40">rivé</span></span>
+                <span class="section-label">Parking inclus</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     ÉQUIPEMENTS — BENTO GRID
+════════════════════════════════════════════════════════ -->
+<section id="equipements" class="py-32 px-8 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <div data-animate>
+            <span class="section-label block mb-4">L'Appartement</span>
+            <h2 class="font-headline text-4xl md:text-5xl italic text-white leading-tight">Équipements &amp; Confort</h2>
+        </div>
+        <p data-animate data-delay="200" class="text-white/40 font-light max-w-xs text-sm leading-relaxed text-right">
+            Tout a été pensé pour votre confort et votre tranquillité d'esprit.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[260px]">
+
+        <!-- Fibre -->
+        <a href="gallerie.html" data-animate data-delay="100"
+           class="bento-glow md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-2xl relative overflow-hidden group">
+            <img src="assets/Images/Ordi.jpg" class="absolute inset-0 w-full h-full object-cover opacity-[8%] group-hover:opacity-20 group-hover:scale-105 transition-all duration-700" alt=""/>
+            <div class="relative z-10 flex flex-col justify-between h-full">
+                <span class="material-symbols-outlined text-primary text-2xl">wifi</span>
+                <div>
+                    <h3 class="text-[11px] uppercase tracking-[0.2em] mb-2 text-white font-semibold">Fibre 510 Mb/s</h3>
+                    <p class="font-light text-sm text-white/50 leading-relaxed">Idéal pour le télétravail ou le streaming 4K sans latence.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Parking -->
+        <a href="gallerie.html" data-animate data-delay="200"
+           class="bento-glow md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-between rounded-2xl relative overflow-hidden group">
+            <img src="assets/Images/Place21.jpg" class="absolute inset-0 w-full h-full object-cover opacity-[12%] group-hover:opacity-25 group-hover:scale-105 transition-all duration-700" alt=""/>
+            <div class="relative z-10 flex flex-col justify-between h-full">
+                <span class="material-symbols-outlined text-primary text-2xl">directions_car</span>
+                <div>
+                    <h3 class="text-[11px] uppercase tracking-[0.2em] mb-2 text-white font-semibold">Parking Privé</h3>
+                    <p class="font-light text-sm text-white/50 leading-relaxed">Place sécurisée en sous-sol incluse dans la réservation.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Jardin — grand -->
+        <a href="gallerie.html" data-animate data-delay="100"
+           class="bento-glow md:col-span-4 md:row-span-2 bg-surface-container-low rounded-2xl relative overflow-hidden group">
+            <img src="assets/Images/Jardin.jpg" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-110 group-hover:opacity-60 transition-all duration-1000" alt="Jardin privé"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-10">
+                <span class="section-label block mb-3 text-primary/60">Extérieur exclusif</span>
+                <p class="text-3xl font-headline mb-3 text-white italic">Jardin &amp; Terrasse</p>
+                <p class="font-light text-sm text-white/50 leading-relaxed">Un espace vert privé pour vos matins au calme.</p>
+            </div>
+            <!-- Tag -->
+            <div class="absolute top-6 right-6 bg-primary/10 backdrop-blur-md px-3 py-1 rounded-full" style="border: 1px solid rgba(189,194,255,0.2)">
+                <span class="text-[9px] uppercase tracking-widest text-primary font-bold">Exclusif</span>
+            </div>
+        </a>
+
+        <!-- Vélos -->
+        <a href="gallerie.html" data-animate data-delay="300"
+           class="bento-glow md:col-span-4 bg-surface-container-low rounded-2xl relative overflow-hidden group">
+            <img src="assets/Images/velos.jpg" class="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:scale-110 group-hover:opacity-40 transition-all duration-1000" alt=""/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8">
+                <span class="material-symbols-outlined text-primary text-xl mb-2 block">pedal_bike</span>
+                <h3 class="text-[11px] uppercase tracking-[0.2em] mb-1 text-white font-semibold">Accueil Vélos</h3>
+                <p class="text-xs text-white/50 font-light">Stationnement sécurisé pour explorer la région.</p>
+            </div>
+        </a>
+
+        <!-- PMR -->
+        <a href="gallerie.html" data-animate data-delay="400"
+           class="bento-glow md:col-span-4 bg-surface-container-low p-10 flex flex-col justify-center rounded-2xl relative overflow-hidden group">
+            <img src="assets/Images/Cuisine.jpg" class="absolute inset-0 w-full h-full object-cover opacity-[15%] group-hover:opacity-25 group-hover:scale-105 transition-all duration-700" alt=""/>
+            <div class="relative z-10">
+                <span class="material-symbols-outlined text-primary text-2xl mb-4 block">accessibility_new</span>
+                <h3 class="text-[11px] uppercase tracking-[0.2em] mb-2 text-white font-semibold">Accès PMR</h3>
+                <p class="font-light text-sm text-zinc-400 leading-relaxed">Logement en rez-de-chaussée, accessible à tous.</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     GUIDE LOCAL
+════════════════════════════════════════════════════════ -->
+<section id="guide-link" class="py-24 px-8 max-w-7xl mx-auto">
+    <!-- Séparateur tonal au lieu d'une ligne -->
+    <div class="h-px bg-gradient-to-r from-transparent via-white/8 to-transparent mb-24"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+            <span data-animate class="section-label block mb-6">Autour de vous</span>
+            <h2 data-animate data-delay="100" class="font-headline text-4xl md:text-5xl italic text-white mb-6 leading-tight">Explorez<br>les environs</h2>
+            <p data-animate data-delay="200" class="text-lg font-light text-white/40 leading-relaxed mb-10">
+                Des nymphéas de Giverny aux tables confidentielles du Vexin, nous avons sélectionné les meilleures adresses locales.
+            </p>
+            <a data-animate data-delay="300" href="local.html" class="inline-flex items-center gap-4 text-primary group font-medium uppercase tracking-widest text-[11px] hover:gap-6 transition-all duration-400">
+                Découvrir le Guide Local
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform duration-300">arrow_right_alt</span>
+            </a>
+        </div>
+
+        <div data-animate data-delay="200" class="relative group cursor-pointer" onclick="window.location.href='local.html'">
+            <div class="aspect-video rounded-2xl overflow-hidden" style="box-shadow: 0 20px 40px rgba(0,0,0,0.5)">
+                <img src="assets/Images/thoiry.jpg" class="w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-75 transition-all duration-700" alt="Guide Local — Thoiry">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-8">
+                    <div>
+                        <span class="section-label block mb-2">Guide du Curateur</span>
+                        <p class="font-headline text-xl italic text-white">Nos coups de cœur locaux</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Hover arrow -->
+            <div class="absolute top-6 right-6 w-10 h-10 rounded-full bg-primary/10 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="border: 1px solid rgba(189,194,255,0.2)">
+                <span class="material-symbols-outlined text-primary text-sm">arrow_outward</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     AVIS — MARQUEE
+════════════════════════════════════════════════════════ -->
+<section id="avis" class="py-24 bg-[#0e0e0e] overflow-hidden">
+    <div class="text-center mb-14 px-8" data-animate>
+        <span class="section-label block mb-4">Ce qu'ils en disent</span>
+        <h2 class="font-headline text-3xl md:text-4xl italic text-white">
+            Avis Clients
+            <span class="text-primary">· 8.9/10 Excellent</span>
+        </h2>
+    </div>
+
+    <!-- Marquee with edge fade -->
+    <div class="marquee-wrap overflow-hidden">
+        <div class="animate-marquee flex text-zinc-300">
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Logement très fonctionnel, quartier calme. On s'y sent comme chez soi."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Ines · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Great location, superb facilities, safe and secure. Exceptional value."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Joanne · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Bel appartement très soigné bien équipé, propre et meublé avec goût."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Rousso · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Nous avons passé un agréable séjour dans cet appartement cozy et convivial."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Edwige · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Die Unterkunft war super, Ich habe mich wie zuhause gefühlt. Sehr empfehlenswert."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Kali · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"L'appartement spacieux et joliment décoré, parking sécurisé très pratique."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Elisabeth · Booking.com</p>
+            </div>
+            <!-- Duplicate set for seamless loop -->
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Logement très fonctionnel, quartier calme. On s'y sent comme chez soi."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Ines · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Great location, superb facilities, safe and secure. Exceptional value."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Joanne · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Bel appartement très soigné bien équipé, propre et meublé avec goût."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Rousso · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Rien à redire, propreté impeccable et calme absolu. À recommander."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Claire · Booking.com</p>
+            </div>
+            <div class="review-card bg-[#1c1b1b] p-7 rounded-xl" style="border: 1px solid rgba(255,255,255,0.04)">
+                <div class="flex gap-0.5 mb-3">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-[12px] text-amber-400" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="italic mb-4 text-sm leading-relaxed">"Die Unterkunft war super, Ich habe mich wie zuhause gefühlt. Sehr empfehlenswert."</p>
+                <p class="text-[10px] text-primary uppercase tracking-widest">— Kali · Booking.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     RÉSERVATION
+════════════════════════════════════════════════════════ -->
+<section id="reserver" class="py-24 px-4 md:px-8 max-w-5xl mx-auto">
+
+    <div data-animate class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div>
+            <span class="section-label block mb-3 text-emerald-400/70">Disponibilités en temps réel</span>
+            <h2 class="text-4xl md:text-6xl italic tracking-tighter text-white font-headline">Réserver l'escale.</h2>
+        </div>
+        <div class="flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.03]" style="border: 1px solid rgba(255,255,255,0.06)">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            </span>
+            <span class="text-[10px] uppercase font-bold tracking-widest text-zinc-400">Live</span>
+        </div>
+    </div>
+
+    <div data-animate data-delay="200" class="p-6 md:p-12 rounded-3xl relative" style="background-color: #0b0e14; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)">
+        <div id="bookWidget-162534-322702-0-1776347520" class="beds24-linear-force"></div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
+<footer class="py-16 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto px-8">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+            <div>
+                <div class="font-headline text-2xl italic font-light text-white mb-3">Escale Paisible</div>
+                <p class="text-white/30 text-sm font-light max-w-xs leading-relaxed">Un appartement d'exception à Mantes-la-Jolie, aux portes de Paris et de Giverny.</p>
+            </div>
+            <div class="flex flex-wrap gap-12">
+                <div>
+                    <p class="section-label mb-4">Navigation</p>
+                    <div class="flex flex-col gap-2.5">
+                        <a href="gallerie.html" class="text-white/40 hover:text-white text-sm transition-colors duration-300">Galerie Photo</a>
+                        <a href="local.html" class="text-white/40 hover:text-white text-sm transition-colors duration-300">Guide Local</a>
+                        <a href="#reserver" class="text-white/40 hover:text-white text-sm transition-colors duration-300">Disponibilités</a>
+                    </div>
+                </div>
+                <div>
+                    <p class="section-label mb-4">Légal</p>
+                    <div class="flex flex-col gap-2.5">
+                        <a href="reglement.html" class="text-white/40 hover:text-white text-sm transition-colors duration-300">Règlement Intérieur</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-px bg-gradient-to-r from-transparent via-white/8 to-transparent mb-8"></div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-zinc-700">© 2026 Escale Paisible · Mantes-la-Jolie</p>
+            <a href="https://wa.me/33683525699" target="_blank" class="flex items-center gap-2 text-white/30 hover:text-white/70 text-[11px] transition-colors duration-300">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Contact WhatsApp
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOATING WHATSAPP
+════════════════════════════════════════════════════════ -->
+<a href="https://wa.me/33683525699" target="_blank"
+   class="fixed bottom-8 right-8 z-[100] group flex items-center gap-3">
+    <span class="btn-primary text-[#131e8c] text-[11px] uppercase tracking-widest px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-400 whitespace-nowrap shadow-xl font-semibold">
+        Une question ?
+    </span>
+    <div class="btn-primary text-[#131e8c] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl">
+        <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </div>
+</a>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════ -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://media.xmlcal.com/widget/1.01/js/bookWidget.min.js"></script>
+<script>
+    /* ── Booking widget ── */
+    jQuery(document).ready(function() {
+        jQuery('#bookWidget-162534-322702-0-1776347520').bookWidget({
+            propid: 322702,
+            boxShadow: false,
+            dateFormat: 'dd/mm/yy',
+            dateSelection: 1,
+            defaultNumAdult: 2,
+            formAction: 'https://beds24.com/booking.php',
+            formTarget: '_blank',
+            maxAdult: 2,
+            widgetLang: 'fr',
+            widgetType: 'BookingBox',
+            width: '100%'
+        });
+    });
+
+    /* ── Entrance animations (IntersectionObserver) ── */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+    /* ── Nav scroll compaction ── */
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    }, { passive: true });
+
+    /* ── Hero subtle parallax ── */
+    const heroImg = document.getElementById('hero-img');
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if (y < window.innerHeight) {
+            heroImg.style.transform = `scale(1.03) translateY(${y * 0.12}px)`;
+        }
+    }, { passive: true });
+</script>
+
+</body>
+</html>

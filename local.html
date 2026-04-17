@@ -3,265 +3,558 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Guide Local - Escale Paisible</title>
+    <title>Guide Local — Escale Paisible</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;700&family=Inter:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
-          tailwind.config = {
-            darkMode: "class",
-            theme: {
-              extend: {
-                colors: {
-                  "primary": "#bdc2ff",
-                  "background": "#131313",
-                  "surface-container-low": "#1c1b1b",
-                  "surface-container-lowest": "#0e0e0e"
-                },
-                fontFamily: { "headline": ["Noto Serif"], "body": ["Inter"] }
-              }
-            }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#bdc2ff",
+              "on-primary": "#131e8c",
+              "background": "#131313",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-high": "#2a2a2a",
+              "surface-container-lowest": "#0e0e0e"
+            },
+            fontFamily: { "headline": ["Noto Serif", "serif"], "body": ["Inter", "sans-serif"] }
           }
+        }
+      }
     </script>
     <style>
+      * { -webkit-font-smoothing: antialiased; }
       html { scroll-behavior: smooth; }
       .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
-      .bento-glow { background: radial-gradient(circle at top left, rgba(189, 194, 255, 0.05) 0%, transparent 70%); }
+
+      #progress-bar {
+        position: fixed; top: 0; left: 0; z-index: 200;
+        height: 2px; background: linear-gradient(90deg, #bdc2ff, #818cf8);
+        width: 0%; transition: width 0.1s linear;
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      [data-animate] { opacity: 0; }
+      [data-animate].is-visible { animation: fadeUp 0.8s cubic-bezier(0.2, 0, 0, 1) forwards; }
+      [data-delay="100"] { animation-delay: 0.1s !important; }
+      [data-delay="200"] { animation-delay: 0.2s !important; }
+      [data-delay="300"] { animation-delay: 0.3s !important; }
+      [data-delay="400"] { animation-delay: 0.4s !important; }
+      [data-delay="500"] { animation-delay: 0.5s !important; }
+
+      nav.scrolled {
+        background: rgba(19,19,19,0.97) !important;
+        padding-top: 0.875rem !important;
+        padding-bottom: 0.875rem !important;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #bdc2ff 0%, #818cf8 100%);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #cdd0ff 0%, #9ba3ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(129, 140, 248, 0.25);
+      }
+
+      .section-label {
+        font-size: 10px; letter-spacing: 0.4em;
+        text-transform: uppercase; font-weight: 700;
+        color: rgba(189, 194, 255, 0.5);
+      }
+
+      .section-number {
+        font-family: 'Noto Serif', serif;
+        font-size: 72px; font-weight: 300; line-height: 1;
+        color: rgba(189, 194, 255, 0.07);
+        letter-spacing: -0.02em;
+        user-select: none; pointer-events: none;
+      }
+
+      .cat-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 7px 16px; border-radius: 999px;
+        font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.4);
+        border: 1px solid rgba(255,255,255,0.07);
+        background: transparent;
+        cursor: pointer; white-space: nowrap;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        text-decoration: none;
+      }
+      .cat-pill:hover { color: #fff; border-color: rgba(189,194,255,0.3); background: rgba(189,194,255,0.05); }
+      .cat-pill.active { color: #131e8c; background: linear-gradient(135deg, #bdc2ff, #818cf8); border-color: transparent; }
+
+      .dest-card {
+        position: relative; overflow: hidden;
+        background: #1c1b1b; border-radius: 16px;
+        transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+      }
+      .dest-card::before {
+        content: '';
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse 180px 180px at 0% 0%, rgba(189,194,255,0.05), transparent 70%);
+        pointer-events: none; z-index: 1;
+        transition: opacity 0.5s ease;
+      }
+      .dest-card:hover { transform: translateY(-4px); }
+      .dest-card:hover::before { opacity: 0; }
+      .dest-card img { transition: transform 0.7s cubic-bezier(0.2, 0, 0, 1); }
+      .dest-card:hover img { transform: scale(1.06); }
+
+      .dist-badge {
+        display: inline-flex; align-items: center; gap: 4px;
+        padding: 3px 10px; border-radius: 999px;
+        font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+        background: rgba(189,194,255,0.1);
+        border: 1px solid rgba(189,194,255,0.2);
+        color: #bdc2ff; white-space: nowrap;
+      }
+
+      .resto-card {
+        background: #1c1b1b; border-radius: 16px; padding: 28px;
+        transition: background 0.4s ease, transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+      }
+      .resto-card:hover { background: #252525; transform: translateY(-3px); }
+
+      @keyframes scrollBounce {
+        0%, 100% { transform: translateY(0); opacity: 0.4; }
+        50%       { transform: translateY(6px); opacity: 0.8; }
+      }
+      .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
     </style>
 </head>
-<body class="bg-[#131313] text-[#e5e2e1] font-body selection:bg-primary/30 antialiased text-white">
+<body class="bg-[#131313] text-[#e5e2e1] font-body antialiased overflow-x-hidden pb-16 md:pb-0">
 
-<nav class="fixed top-0 w-full z-50 bg-[#131313]/80 backdrop-blur-xl border-b border-white/5">
-    <div class="flex justify-between items-center w-full px-8 py-6 max-w-7xl mx-auto">
-        <div class="text-xl font-light tracking-[0.1em] uppercase font-headline">Escale Paisible</div>
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav id="main-nav" class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl transition-all duration-500">
+    <div class="flex justify-between items-center w-full px-8 py-7 max-w-7xl mx-auto transition-all duration-500">
+        <a href="index.html" class="text-xl font-light tracking-[0.12em] uppercase font-headline text-white hover:text-primary transition-colors duration-300">
+            Escale Paisible
+        </a>
         <div class="hidden md:flex items-center gap-10">
-            <div class="flex items-center gap-8 text-xs uppercase tracking-widest border-r border-white/10 pr-10">
-                <a href="index.html#appartement" class="hover:text-primary transition-colors">L'Appartement</a>
-                <a href="index.html#equipements" class="hover:text-primary transition-colors">Équipements</a>
-                <a href="#" class="text-primary border-b border-primary/40 pb-1">Guide Local</a>
-                <a href="gallerie.html" class="hover:text-primary transition-colors flex items-center gap-1 text-primary">Galerie <span class="material-symbols-outlined text-[14px]">photo_library</span></a>
-                <a href="index.html#avis" class="hover:text-primary transition-colors">Avis</a>
+            <div class="flex items-center gap-8 text-[11px] uppercase tracking-widest pr-10" style="border-right: 1px solid rgba(255,255,255,0.08)">
+                <a href="index.html#appartement" class="text-white/50 hover:text-white transition-colors duration-300">L'Appartement</a>
+                <a href="index.html#equipements" class="text-white/50 hover:text-white transition-colors duration-300">Équipements</a>
+                <a href="#" class="text-primary">Guide Local</a>
+                <a href="gallerie.html" class="text-white/50 hover:text-white transition-colors duration-300 flex items-center gap-1.5">
+                    Galerie <span class="material-symbols-outlined text-[13px]">photo_library</span>
+                </a>
+                <a href="index.html#avis" class="text-white/50 hover:text-white transition-colors duration-300">Avis</a>
             </div>
             <div class="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase">
                 <button onclick="location.href='index.html'" class="text-primary">FR</button>
-                <span class="opacity-20">|</span>
-                <a href="en.html" class="opacity-40 hover:opacity-100">EN</a>
+                <span class="text-white/20">|</span>
+                <a href="en.html" class="text-white/30 hover:text-white/80 transition-colors">EN</a>
             </div>
-            <a href="index.html#reserver" class="bg-primary text-[#131e8c] px-6 py-2 font-medium text-xs uppercase tracking-wider rounded-sm hover:scale-95 transition-transform">Réserver</a>
+            <a href="index.html#reserver" class="btn-primary text-on-primary px-6 py-2.5 font-semibold text-[11px] uppercase tracking-wider rounded-sm">
+                Réserver
+            </a>
         </div>
     </div>
 </nav>
 
-<main class="pt-40 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
-    <header class="mb-20">
-        <h1 class="font-headline text-5xl md:text-7xl mb-6 tracking-tight italic">Le Guide du Curateur</h1>
-        <p class="font-body text-white/60 max-w-xl text-lg leading-relaxed font-light">
-            Une sélection rigoureuse des trésors de notre région. Des monuments séculaires aux tables confidentielles, découvrez l'âme du Vexin.
-        </p>
-    </header>
-
-    <section class="mb-32">
-        <div class="flex items-end justify-between mb-12">
-            <h2 class="font-headline text-3xl italic text-primary">À voir et à faire</h2>
-            <div class="h-px bg-white/10 flex-grow mx-8 mb-2"></div>
-            <span class="font-label uppercase text-[10px] tracking-[0.3em] font-bold text-primary">Destinations</span>
+<!-- HERO -->
+<header class="relative h-[60vh] min-h-[440px] w-full flex items-end overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="assets/Images/giverny.jpg" alt="Giverny — Les jardins de Monet"
+             id="hero-img" class="w-full h-full object-cover scale-105"
+             style="transition: transform 8s cubic-bezier(0.2,0,0,1); transform-origin: center 40%"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#131313] via-black/40 to-black/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#131313]/70 to-transparent"></div>
+    </div>
+    <div class="relative z-10 px-8 md:px-16 pb-16 w-full max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+            <div>
+                <span data-animate class="section-label block mb-4">Aux portes de Paris</span>
+                <h1 data-animate data-delay="100" class="font-headline text-5xl md:text-7xl font-light italic text-white leading-none">
+                    Le Guide<br><span class="text-primary/80">du Curateur</span>
+                </h1>
+            </div>
+            <p data-animate data-delay="200" class="text-white/50 font-light text-sm leading-relaxed max-w-xs text-right pb-1">
+                Monuments séculaires, tables confidentielles, nature préservée — l'âme du Vexin à portée de main.
+            </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5">
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator">
+        <span class="material-symbols-outlined text-white/30 text-lg">keyboard_arrow_down</span>
+    </div>
+</header>
+
+<!-- CATEGORY PILLS — sticky -->
+<div id="cat-nav" class="sticky top-[72px] z-40 bg-[#131313]/95 backdrop-blur-xl py-4 px-6 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
+        <div class="flex items-center gap-2 min-w-max">
+            <a href="#destinations" class="cat-pill active" data-cat="destinations">
+                <span class="material-symbols-outlined text-[13px]">explore</span> Destinations
+            </a>
+            <a href="#gastronomie" class="cat-pill" data-cat="gastronomie">
+                <span class="material-symbols-outlined text-[13px]">restaurant</span> Gastronomie
+            </a>
+            <a href="#pratique" class="cat-pill" data-cat="pratique">
+                <span class="material-symbols-outlined text-[13px]">shopping_cart</span> Commodités
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN -->
+<main class="pb-32 px-6 md:px-12 max-w-7xl mx-auto">
+
+    <!-- 01 / DESTINATIONS -->
+    <section id="destinations" class="cat-section pt-20 mb-36" data-cat="destinations">
+        <div class="flex items-end justify-between mb-16">
+            <div data-animate>
+                <div class="section-number mb-2">01</div>
+                <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">À voir &amp; à faire</h2>
+            </div>
+            <span data-animate data-delay="200" class="section-label pb-2">Destinations</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+            <div data-animate data-delay="100" class="dest-card md:col-span-3">
                 <div class="aspect-[4/5] overflow-hidden">
-                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/church.jpg" alt="Collégiale Notre-Dame"/>
+                    <img src="assets/Images/church.jpg" alt="Collégiale Notre-Dame" class="w-full h-full object-cover"/>
                 </div>
-                <div class="p-6 text-left">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-headline text-xl">Collégiale Notre-Dame</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">1KM</span>
+                <div class="p-6 relative z-10">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-headline text-lg leading-tight">Collégiale Notre-Dame</h3>
+                        <span class="dist-badge shrink-0 ml-2">
+                            <span class="material-symbols-outlined text-[10px]">directions_walk</span>1KM
+                        </span>
                     </div>
-                    <p class="text-sm text-white/50 italic font-light">"Monument gothique historique de 1150. Un joyau architectural à deux pas."</p>
+                    <p class="text-sm text-white/40 italic font-light leading-relaxed">Monument gothique de 1150. Un joyau à deux pas.</p>
                 </div>
             </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5 lg:col-span-2">
-                <div class="aspect-[16/9] overflow-hidden">
-                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/giverny.jpg" alt="Giverny Monet"/>
+
+            <div data-animate data-delay="200" class="dest-card md:col-span-6">
+                <div class="aspect-[16/10] overflow-hidden">
+                    <img src="assets/Images/giverny.jpg" alt="Giverny — Jardins de Monet" class="w-full h-full object-cover"/>
                 </div>
-                <div class="p-6 text-left">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-headline text-xl text-white">Giverny</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">25KM</span>
+                <div class="p-6 relative z-10">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-headline text-2xl">Giverny</h3>
+                        <span class="dist-badge shrink-0 ml-2">
+                            <span class="material-symbols-outlined text-[10px]">directions_car</span>25KM
+                        </span>
                     </div>
-                    <p class="text-sm text-white/50 italic font-light">"La Maison et les Jardins de Claude Monet. L'impressionnisme prend vie sous vos yeux."</p>
+                    <p class="text-sm text-white/40 italic font-light leading-relaxed">La Maison et les Jardins de Claude Monet. L'impressionnisme prend vie sous vos yeux.</p>
                 </div>
             </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5">
+
+            <div data-animate data-delay="300" class="dest-card md:col-span-3">
                 <div class="aspect-[4/5] overflow-hidden">
-                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/museum.jpg" alt="Musée Hôtel-Dieu"/>
+                    <img src="assets/Images/museum.jpg" alt="Musée de l'Hôtel-Dieu" class="w-full h-full object-cover"/>
                 </div>
-                <div class="p-6 text-left">
+                <div class="p-6 relative z-10">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-headline text-lg leading-tight">Musée de l'Hôtel-Dieu</h3>
+                        <span class="dist-badge shrink-0 ml-2">
+                            <span class="material-symbols-outlined text-[10px]">directions_walk</span>1KM
+                        </span>
+                    </div>
+                    <p class="text-sm text-white/40 italic font-light leading-relaxed">Histoire locale et art au cœur de la ville.</p>
+                </div>
+            </div>
+
+            <div data-animate data-delay="100" class="dest-card md:col-span-3">
+                <div class="aspect-square overflow-hidden">
+                    <img src="assets/Images/vetheuil.jpg" alt="Vétheuil" class="w-full h-full object-cover"/>
+                </div>
+                <div class="p-5 relative z-10">
                     <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-headline text-xl">Musée de l'Hôtel-Dieu</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">1KM</span>
+                        <h3 class="font-headline text-base">Vétheuil</h3>
+                        <span class="dist-badge"><span class="material-symbols-outlined text-[10px]">directions_car</span>12KM</span>
                     </div>
-                    <p class="text-sm text-white/50 italic font-light">"Histoire locale et art au cœur de la ville."</p>
+                    <p class="text-xs text-white/40 italic font-light">Village pittoresque ayant inspiré les impressionnistes.</p>
                 </div>
             </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5 text-left">
-                <div class="aspect-square overflow-hidden"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/vetheuil.jpg" alt="Vétheuil"/></div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2 text-left">
-                        <h3 class="font-headline text-xl text-left">Vétheuil</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">12KM</span>
+
+            <div data-animate data-delay="200" class="dest-card md:col-span-3">
+                <div class="aspect-square overflow-hidden">
+                    <img src="assets/Images/seine.jpg" alt="Bords de Seine" class="w-full h-full object-cover"/>
+                </div>
+                <div class="p-5 relative z-10">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-headline text-base">Bords de Seine</h3>
+                        <span class="dist-badge"><span class="material-symbols-outlined text-[10px]">directions_walk</span>200M</span>
                     </div>
-                    <p class="text-sm text-white/50 italic font-light text-left">"Village pittoresque sur la Seine ayant inspiré les plus grands."</p>
+                    <p class="text-xs text-white/40 italic font-light">Randonnée et nature au fil de l'eau.</p>
                 </div>
             </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5 text-left">
-                <div class="aspect-square overflow-hidden"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/seine.jpg" alt="Bords de Seine"/></div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2 text-left">
-                        <h3 class="font-headline text-xl text-left">Bords de Seine</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">200M</span>
+
+            <div data-animate data-delay="300" class="dest-card md:col-span-3">
+                <div class="aspect-square overflow-hidden">
+                    <img src="assets/Images/vexin.jpg" alt="Vexin Français" class="w-full h-full object-cover"/>
+                </div>
+                <div class="p-5 relative z-10">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-headline text-base">Vexin Français</h3>
+                        <span class="dist-badge"><span class="material-symbols-outlined text-[10px]">directions_car</span>23KM</span>
                     </div>
-                    <p class="text-sm text-white/50 italic font-light text-left">"Nature et randonnée au fil de l'eau, à quelques pas de votre porte."</p>
+                    <p class="text-xs text-white/40 italic font-light">Parc naturel aux villages en pierre intemporels.</p>
                 </div>
             </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5 text-left">
-                <div class="aspect-square overflow-hidden"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/vexin.jpg" alt="Vexin"/></div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2 text-left">
-                        <h3 class="font-headline text-xl text-left">Vexin Français</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">23KM</span>
+
+            <div data-animate data-delay="400" class="dest-card md:col-span-3">
+                <div class="aspect-square overflow-hidden">
+                    <img src="assets/Images/roche.jpg" alt="La Roche-Guyon" class="w-full h-full object-cover"/>
+                </div>
+                <div class="p-5 relative z-10">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-headline text-base">La Roche-Guyon</h3>
+                        <span class="dist-badge"><span class="material-symbols-outlined text-[10px]">directions_car</span>17KM</span>
                     </div>
-                    <p class="text-sm text-white/50 italic font-light text-left">"Parc naturel aux villages en pierre intemporels."</p>
+                    <p class="text-xs text-white/40 italic font-light">Village classé, château et donjon troglodyte.</p>
                 </div>
             </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow border border-white/5 text-left">
-                <div class="aspect-square overflow-hidden"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="assets/Images/roche.jpg" alt="La Roche-Guyon"/></div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2 text-left">
-                        <h3 class="font-headline text-xl text-left">La Roche-Guyon</h3>
-                        <span class="font-label text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded uppercase font-bold">17KM</span>
-                    </div>
-                    <p class="text-sm text-white/50 italic font-light text-left">"Village classé dominé par son château et son donjon troglodyte."</p>
-                </div>
-            </div>
-            <div class="group relative overflow-hidden bg-surface-container-low rounded-xl transition-all duration-500 hover:-translate-y-1 bento-glow lg:col-span-full border border-white/5">
+
+            <!-- Thoiry — pleine largeur -->
+            <div data-animate data-delay="200" class="dest-card md:col-span-12">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <div class="h-64 lg:h-full overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="assets/Images/thoiry.jpg" alt="Thoiry"/>
+                    <div class="h-64 lg:h-80 overflow-hidden">
+                        <img src="assets/Images/thoiry.jpg" alt="Parc de Thoiry" class="w-full h-full object-cover"/>
                     </div>
-                    <div class="p-12 flex flex-col justify-center text-left">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="font-headline text-3xl">Parc de Thoiry</h3>
-                            <span class="font-label text-xs bg-primary/10 text-primary px-3 py-1 rounded-full uppercase font-bold">19KM</span>
+                    <div class="p-10 lg:p-14 flex flex-col justify-center relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div>
+                                <span class="section-label block mb-3">Incontournable</span>
+                                <h3 class="font-headline text-3xl md:text-4xl italic text-white">Parc de Thoiry</h3>
+                            </div>
+                            <span class="dist-badge mt-1"><span class="material-symbols-outlined text-[10px]">directions_car</span>19KM</span>
                         </div>
-                        <p class="text-lg text-white/60 italic mb-6 font-light">"Safari et château historique pour une journée inoubliable en famille."</p>
-                        <a class="text-primary font-medium inline-flex items-center gap-2 group-hover:gap-4 transition-all uppercase tracking-widest text-xs" href="#">Découvrir le parc <span class="material-symbols-outlined">arrow_forward</span></a>
+                        <p class="text-white/50 italic font-light leading-relaxed mb-8 max-w-sm">
+                            Safari africain et château historique du XVIe siècle. Une journée inoubliable pour toute la famille.
+                        </p>
+                        <a href="https://www.thoiry.net" target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-3 text-primary text-[11px] font-semibold uppercase tracking-widest hover:gap-5 transition-all duration-300 group">
+                            Découvrir le parc
+                            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+                        </a>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <section class="mb-32">
-        <div class="flex items-end justify-between mb-12">
-            <h2 class="font-headline text-3xl italic text-primary">Saveurs Locales</h2>
-            <div class="h-px bg-white/10 flex-grow mx-8 mb-2"></div>
-            <span class="font-label uppercase text-[10px] tracking-[0.3em] font-bold text-primary">Gastronomie</span>
+    <!-- 02 / GASTRONOMIE -->
+    <section id="gastronomie" class="cat-section mb-36" data-cat="gastronomie">
+        <div class="flex items-end justify-between mb-16">
+            <div data-animate>
+                <div class="section-number mb-2">02</div>
+                <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Saveurs Locales</h2>
+            </div>
+            <span data-animate data-delay="200" class="section-label pb-2">Gastronomie</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="p-8 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-all border border-white/5 text-left">
-                <div class="flex justify-between items-start mb-6 text-left">
-                    <span class="material-symbols-outlined text-primary text-4xl">restaurant</span>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+            <div data-animate data-delay="100" class="resto-card">
+                <div class="flex justify-between items-start mb-7">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl">restaurant</span>
+                    </div>
                     <div class="text-right">
-                        <span class="text-primary font-bold text-xs uppercase">1KM</span>
-                        <span class="text-white/40 text-xs">20-30€</span>
+                        <span class="dist-badge block mb-1.5"><span class="material-symbols-outlined text-[10px]">directions_walk</span>1KM</span>
+                        <span class="text-white/30 text-xs font-light">20 – 30 €</span>
                     </div>
                 </div>
-                <h3 class="font-headline text-2xl mb-2 text-left">Dalla Famiglia</h3>
-                <p class="text-primary/70 text-sm mb-4 italic text-left">Italien</p>
-                <p class="text-white/50 text-sm border-t border-white/5 pt-4 font-light text-left">Authenticité italienne et accueil chaleureux.</p>
+                <h3 class="font-headline text-2xl mb-1">Dalla Famiglia</h3>
+                <p class="text-primary/60 text-xs mb-5 uppercase tracking-widest font-semibold">Italien</p>
+                <div class="h-px bg-white/5 mb-5"></div>
+                <p class="text-white/40 text-sm font-light leading-relaxed">Authenticité italienne et accueil chaleureux. La cantine du quartier.</p>
             </div>
-            <div class="p-8 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-all border border-white/5 text-left">
-                <div class="flex justify-between items-start mb-6 text-left">
-                    <span class="material-symbols-outlined text-primary text-4xl">lunch_dining</span>
-                    <div class="flex flex-col items-end">
-                        <span class="text-primary font-bold text-xs uppercase">1KM</span>
-                        <span class="text-white/40 text-xs">20-30€</span>
+
+            <div data-animate data-delay="200" class="resto-card">
+                <div class="flex justify-between items-start mb-7">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl">lunch_dining</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="dist-badge block mb-1.5"><span class="material-symbols-outlined text-[10px]">directions_walk</span>1KM</span>
+                        <span class="text-white/30 text-xs font-light">20 – 30 €</span>
                     </div>
                 </div>
-                <h3 class="font-headline text-2xl mb-2 text-left">Jack & Joey Burgers</h3>
-                <p class="text-primary/70 text-sm mb-4 italic text-left">Burgers artisanaux</p>
-                <p class="text-white/50 text-sm border-t border-white/5 pt-4 font-light text-left">Des ingrédients sourcés pour les amoureux de qualité.</p>
+                <h3 class="font-headline text-2xl mb-1">Jack &amp; Joey</h3>
+                <p class="text-primary/60 text-xs mb-5 uppercase tracking-widest font-semibold">Burgers artisanaux</p>
+                <div class="h-px bg-white/5 mb-5"></div>
+                <p class="text-white/40 text-sm font-light leading-relaxed">Ingrédients sourcés localement. Pour les amoureux de qualité.</p>
             </div>
-            <div class="p-8 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-all border border-white/5 text-left">
-                <div class="flex justify-between items-start mb-6 text-left">
-                    <span class="material-symbols-outlined text-primary text-4xl">local_bar</span>
-                    <div class="flex flex-col items-end text-left">
-                        <span class="text-primary font-bold text-xs uppercase text-left">850M</span>
-                        <span class="text-white/40 text-xs text-left">19-21€</span>
+
+            <div data-animate data-delay="300" class="resto-card">
+                <div class="flex justify-between items-start mb-7">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl">local_bar</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="dist-badge block mb-1.5"><span class="material-symbols-outlined text-[10px]">directions_walk</span>850M</span>
+                        <span class="text-white/30 text-xs font-light">19 – 21 €</span>
                     </div>
                 </div>
-                <h3 class="font-headline text-2xl mb-2 text-white text-left">Ô Baradise</h3>
-                <p class="text-primary/70 text-sm mb-4 italic text-left">Tapas & Cocktails</p>
-                <p class="text-white/50 text-sm border-t border-white/5 pt-4 font-light text-left">Ambiance décontractée et créations mixologiques.</p>
+                <h3 class="font-headline text-2xl mb-1">Ô Baradise</h3>
+                <p class="text-primary/60 text-xs mb-5 uppercase tracking-widest font-semibold">Tapas &amp; Cocktails</p>
+                <div class="h-px bg-white/5 mb-5"></div>
+                <p class="text-white/40 text-sm font-light leading-relaxed">Ambiance décontractée et créations mixologiques du soir.</p>
             </div>
+
         </div>
     </section>
 
-    <section class="mb-32">
-        <div class="flex items-end justify-between mb-12">
-            <h2 class="font-headline text-3xl italic text-primary">Commodités Pratiques</h2>
-            <div class="h-px bg-white/10 flex-grow mx-8 mb-2"></div>
-            <span class="font-label uppercase text-[10px] tracking-[0.3em] font-bold text-primary">Utile</span>
+    <!-- 03 / COMMODITÉS -->
+    <section id="pratique" class="cat-section mb-36" data-cat="pratique">
+        <div class="flex items-end justify-between mb-16">
+            <div data-animate>
+                <div class="section-number mb-2">03</div>
+                <h2 class="font-headline text-4xl md:text-5xl italic text-white -mt-4">Commodités Pratiques</h2>
+            </div>
+            <span data-animate data-delay="200" class="section-label pb-2">Utile</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-            <div class="bg-surface-container-low p-10 rounded-2xl border border-white/5 flex items-start gap-8">
-                <div class="bg-primary/10 p-4 rounded-xl">
-                    <span class="material-symbols-outlined text-primary text-4xl">directions_walk</span>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <div data-animate data-delay="100"
+                 class="bg-surface-container-low rounded-2xl p-10 flex items-start gap-8 hover:bg-surface-container-high transition-all duration-400 group">
+                <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors duration-400">
+                    <span class="material-symbols-outlined text-primary text-3xl">directions_walk</span>
                 </div>
-                <div class="text-left">
-                    <h3 class="font-headline text-2xl mb-4 italic text-left">À PIED</h3>
-                    <p class="text-white font-medium text-left">Intermarché (400m)</p>
-                    <p class="text-sm text-white/50 font-light italic text-left">L-S 08:30 - 20:00 | Dimanche matin</p>
-                </div>
-            </div>
-            <div class="bg-surface-container-low p-10 rounded-2xl border border-white/5 flex items-start gap-8">
-                <div class="bg-primary/10 p-4 rounded-xl">
-                    <span class="material-symbols-outlined text-primary text-4xl">directions_car</span>
-                </div>
-                <div class="text-left">
-                    <h3 class="font-headline text-2xl mb-4 italic text-left text-white">EN VOITURE</h3>
-                    <p class="text-white font-medium text-left">Carrefour Limay (5km)</p>
-                    <p class="text-sm text-white/50 font-light italic text-left">Ouvert jusqu'à 21:00</p>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <h3 class="font-headline text-2xl italic">À pied</h3>
+                        <span class="dist-badge">400M</span>
+                    </div>
+                    <p class="text-white font-medium mb-1">Intermarché</p>
+                    <p class="text-sm text-white/40 font-light">Lun – Sam · 08h30 – 20h00</p>
+                    <p class="text-sm text-white/40 font-light">Dimanche matin</p>
                 </div>
             </div>
+
+            <div data-animate data-delay="200"
+                 class="bg-surface-container-low rounded-2xl p-10 flex items-start gap-8 hover:bg-surface-container-high transition-all duration-400 group">
+                <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors duration-400">
+                    <span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <h3 class="font-headline text-2xl italic">En voiture</h3>
+                        <span class="dist-badge">5KM</span>
+                    </div>
+                    <p class="text-white font-medium mb-1">Carrefour Limay</p>
+                    <p class="text-sm text-white/40 font-light">Ouvert jusqu'à 21h00</p>
+                    <p class="text-sm text-white/40 font-light">Grand choix, parking facile</p>
+                </div>
+            </div>
+
         </div>
     </section>
+
+    <!-- CTA -->
+    <div data-animate class="rounded-3xl overflow-hidden relative">
+        <img src="assets/Images/seine.jpg" alt="Bords de Seine" class="absolute inset-0 w-full h-full object-cover opacity-20"/>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#131313] via-[#131313]/80 to-[#131313]/50"></div>
+        <div class="relative z-10 p-12 md:p-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div>
+                <span class="section-label block mb-4">Prêt à explorer ?</span>
+                <h2 class="font-headline text-4xl md:text-5xl italic text-white">Réservez votre escale.</h2>
+                <p class="text-white/40 font-light mt-3 max-w-md">Disponibilités en temps réel. Toutes ces merveilles vous attendent.</p>
+            </div>
+            <a href="index.html#reserver" class="btn-primary text-on-primary px-10 py-5 text-[11px] uppercase tracking-widest font-bold rounded-sm shrink-0">
+                Vérifier les disponibilités
+            </a>
+        </div>
+    </div>
+
 </main>
 
-<a href="https://wa.me/33683525699" target="_blank" class="fixed bottom-8 right-8 z-[100] group flex items-center gap-3">
-    <span class="bg-surface-container-low border border-white/5 text-xs uppercase tracking-widest px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-2xl text-white">Une question ?</span>
-    <div class="bg-primary text-[#131e8c] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
-        <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<!-- FOOTER -->
+<footer class="py-12 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto px-8">
+        <div class="h-px bg-gradient-to-r from-transparent via-white/8 to-transparent mb-10"></div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-white/20">© 2026 Escale Paisible · Mantes-la-Jolie</p>
+            <div class="flex gap-8 text-[11px] text-white/30">
+                <a href="gallerie.html" class="hover:text-white/70 transition-colors">Galerie</a>
+                <a href="index.html#reserver" class="hover:text-white/70 transition-colors">Réserver</a>
+                <a href="reglement.html" class="hover:text-white/70 transition-colors">Règlement</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/33683525699" target="_blank" class="fixed bottom-8 right-8 z-[100] group flex items-center gap-3"
+   style="transition: all 0.4s cubic-bezier(0.2,0,0,1);">
+    <span class="btn-primary text-on-primary text-[11px] uppercase tracking-widest px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-xl font-semibold">
+        Une question ?
+    </span>
+    <div class="btn-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+        <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </div>
 </a>
 
-<footer class="py-12 border-t border-white/5 bg-[#0e0e0e] text-center">
-    <div class="text-[10px] uppercase tracking-[0.2em] text-white/20 italic">© 2026 Escale Paisible • Mantes-la-Jolie</div>
-</footer>
-
-<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-2xl flex justify-around items-center px-4 pb-6 pt-2 z-50 border-t border-white/5">
-    <a class="flex flex-col items-center justify-center text-white/40 p-2" href="index.html">
-        <span class="material-symbols-outlined">home</span>
-        <span class="font-sans text-[10px] uppercase mt-1">Accueil</span>
+<!-- MOBILE NAV -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#0e0e0e]/95 backdrop-blur-2xl flex justify-around items-center px-4 pb-6 pt-3 z-50"
+     style="border-top: 1px solid rgba(255,255,255,0.05)">
+    <a class="flex flex-col items-center text-white/30 hover:text-white/70 transition-colors" href="index.html">
+        <span class="material-symbols-outlined text-xl">home</span>
+        <span class="text-[9px] uppercase mt-1 tracking-widest">Accueil</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-primary" href="#">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
-        <span class="font-sans text-[10px] uppercase mt-1">Guide</span>
+    <a class="flex flex-col items-center text-primary" href="#">
+        <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">explore</span>
+        <span class="text-[9px] uppercase mt-1 tracking-widest">Guide</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-white/40 p-2" href="gallerie.html">
-        <span class="material-symbols-outlined">photo_library</span>
-        <span class="font-sans text-[10px] uppercase mt-1">Photos</span>
+    <a class="flex flex-col items-center text-white/30 hover:text-white/70 transition-colors" href="gallerie.html">
+        <span class="material-symbols-outlined text-xl">photo_library</span>
+        <span class="text-[9px] uppercase mt-1 tracking-widest">Photos</span>
+    </a>
+    <a class="flex flex-col items-center text-white/30 hover:text-white/70 transition-colors" href="index.html#reserver">
+        <span class="material-symbols-outlined text-xl">calendar_month</span>
+        <span class="text-[9px] uppercase mt-1 tracking-widest">Réserver</span>
     </a>
 </nav>
+
+<script>
+    const animObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); }});
+    }, { threshold: 0.1 });
+    document.querySelectorAll('[data-animate]').forEach(el => animObs.observe(el));
+
+    const catSections = document.querySelectorAll('.cat-section');
+    const catPills    = document.querySelectorAll('.cat-pill');
+    const catObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const cat = entry.target.dataset.cat;
+                catPills.forEach(p => p.classList.toggle('active', p.dataset.cat === cat));
+                const active = document.querySelector(`.cat-pill[data-cat="${cat}"]`);
+                if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        });
+    }, { rootMargin: '-25% 0px -65% 0px' });
+    catSections.forEach(s => catObs.observe(s));
+
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        document.getElementById('progress-bar').style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    const heroImg = document.getElementById('hero-img');
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if (y < window.innerHeight) heroImg.style.transform = `scale(1.05) translateY(${y * 0.1}px)`;
+    }, { passive: true });
+</script>
 
 </body>
 </html>
